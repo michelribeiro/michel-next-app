@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import Image from 'next/image';
 // Import react scroll
 import { Link as LinkScroll } from 'react-scroll';
 
@@ -21,7 +21,7 @@ const Header = () => {
       >
         <nav className='max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto grid grid-flow-col py-3 sm:py-4'>
           <div className='col-start-1 col-end-2 flex items-center'>
-            <p className='h-8 w-auto'>Michel Ribeiro</p>
+            <img src='/assets/logo.png' alt='Michel Ribeiro' width='150' />
           </div>
           <ul className='hidden lg:flex col-start-4 col-end-8 text-black-500  items-center'>
             <LinkScroll
@@ -40,7 +40,7 @@ const Header = () => {
                   : ' text-black-500 hover:text-orange-500 a')
               }
             >
-              About
+              Sobre
             </LinkScroll>
             <LinkScroll
               activeClass='active'
@@ -58,7 +58,7 @@ const Header = () => {
                   : ' text-black-500 hover:text-orange-500 ')
               }
             >
-              Feature
+              Valores
             </LinkScroll>
           </ul>
         </nav>
@@ -98,7 +98,7 @@ const Header = () => {
                   d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
                 />
               </svg>
-              About
+              Sobre
             </LinkScroll>
             <LinkScroll
               activeClass='active'
@@ -130,7 +130,7 @@ const Header = () => {
                   d='M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9'
                 />
               </svg>
-              Feature
+              Valores
             </LinkScroll>
             <LinkScroll
               activeClass='active'

@@ -28,9 +28,13 @@ const Feature = () => {
             Atendemos desde o pequeno empreendedor até grandes empresas.
           </p>
           <ul className='text-black-500 self-start list-inside ml-8'>
+            <li className='relative circle-check custom-list'>Site</li>
             <li className='relative circle-check custom-list'>E-commerce</li>
             <li className='relative circle-check custom-list'>
-              Site com gerenciador de conteúdo
+              Identidade visual
+            </li>
+            <li className='relative circle-check custom-list'>
+              Google analytics
             </li>
             <li className='relative circle-check custom-list'>
               Infraestrutura (Azure, AWS, Google etc)

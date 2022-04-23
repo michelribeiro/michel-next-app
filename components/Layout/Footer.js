@@ -15,7 +15,7 @@ const Footer = () => {
               </Link>
             </div>
           </div>
-          <p className='text-gray-400'>©2020 Michel Ribeiro</p>
+          <p className='text-gray-400'>©2022 Michel Ribeiro</p>
         </div>
 
         <div className='row-span-2 sm:col-span-2 sm:col-start-9 sm:col-end-11 flex flex-col'>

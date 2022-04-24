@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { AppProps } from "next/app";
 import Analytics from "../util/analytics";
 import * as gtag from "../util/gtag";
@@ -24,8 +24,6 @@ function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Michel Ribeiro - Software engineer</title>
-        <link rel="shortcut icon" href="/img/icon-512.png" />
-        <link rel="apple-touch-icon" href="/img/icon-512.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#06092B" />
         <meta

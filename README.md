@@ -1,40 +1,68 @@
-# [Tailwind VPN Landingpage](https://next-landing-vpn.vercel.app/) - Free Landingpage Template Apps
+## The purpose of this repository is to create a base template with everything you need for a complete front end project.
 
-Tailwind VPN Landingpage is an open source, apps landing page template for [Tailwind CSS](https://tailwindcss.com/) and[ NextJS](nextjs.org/) coded by [Faldi](twitter.com/f2aldi) and design from [Didi](https://twitter.com/didiikurniawann).
+### Getting Started
 
-![Landing Page](./landingpage.png)
+Template for future projects
 
-## Getting Started
+I made this model using:
+* NextJs
+  * ReactJs
+  * Styled-components
+* Jest
+* Lint
+* Prettier
+* Storybook
+* PWA
 
-Choose one of the following options to get started:
+### The profiles for running the project
 
-- [Download the latest release](https://github.com/naufaldi/next-landing-vpn/archive/main.zip)
-- Clone the repo: `git clone https://github.com/naufaldi/next-landing-vpn.git`
-- Fork the repo
+yarn or npm run
 
-## About the Template
+````
+"scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint src --max-warnings=0",
+    "test": "jest",
+    "test:watch": "yarn test --watch",
+    "storybook": "start-storybook -s ./public -p 6006",
+    "build-storybook": "build-storybook"
+  }
+````
+### Configured Base Url
+File: tsconfig.json
+````
+"baseUrl": "src"
+````
 
-- Template building using NextJS Version 10
-- Tailwind v2.0
+### Prettier
+The pattern to be followed in the code
+File: .prettierrc
 
-## Feature Template
+````
+{
+  "trailingComma": "none", //Print trailing commas wherever possible when multi-line
+  "semi": false, //Print semicolons at the ends of statements
+  "singleQuote": true //Use single quotes instead of double quotes
+}
+````
 
-- Using [NextJS Image](https://nextjs.org/docs/api-reference/next/image) for Image Optimization
-- Slider using [React Slick](https://react-slick.neostack.com/docs/api)
-- Smooth Scrolling and Active menu using [React Scroll](https://www.npmjs.com/package/react-scroll)
+For more examples [Prettier](https://prettier.io/docs/en/options.html)
 
-## Bugs and Issues
+### Plop (to generate a component automatically)
 
-Have a bug or an issue with this template? [Open a new issue](https://github.com/naufaldi/next-landing-vpn/issues/new) here on GitHub.
+Run at the terminal `yarn generate`
 
-## Creator
+The question will appear `components name please`
 
-[Tailwind VPN Landingpage](https://next-landing-vpn.vercel.app/) was coded and modified by and is maintained by **[me](https://github.com/naufaldi/)**, and dekstop design by [Didi Kurniawan](https://twitter.com/didiikurniawann)
+This will create the react component with the files
 
-## Copyright and License
+* [Name of component]/index.tsx
+* [Name of component]/stories.tsx
+* [Name of component]/styles.ts
+* [Name of component]/test.tsx
 
-Code released under the MIT license.
 
-## To Do List Add Feature
 
-- [ ] Animation using Framer Motion
+Thank you for sharing this content and if you have any question, send me an e-mail [michel.ribeiro@michelribeiro.com.br](michel.ribeiro@michelribeiro.com.br)

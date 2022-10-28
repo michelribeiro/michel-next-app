@@ -1,18 +1,6 @@
 {
   "name": "Michel Ribeiro",
   "short_name": "ML",
-  "icons": [
-    {
-      "src": "/img/icon-192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "/img/icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
   "background_color": "#06092B",
   "description": "Michel Ribeiro - The window of world.",
   "display": "fullscreen",

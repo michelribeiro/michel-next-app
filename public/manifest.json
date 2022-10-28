@@ -1,6 +1,6 @@
 {
-  "name": "E-commerce - Boilerplate",
-  "short_name": "E-commerce",
+  "name": "Michel Ribeiro",
+  "short_name": "ML",
   "icons": [
     {
       "src": "/img/icon-192.png",
@@ -14,7 +14,7 @@
     }
   ],
   "background_color": "#06092B",
-  "description": "Boilerplate utilizando Typescript, React, NextJS e Styled Components!",
+  "description": "Michel Ribeiro - The window of world.",
   "display": "fullscreen",
   "start_url": "/",
   "theme_color": "#06092B"

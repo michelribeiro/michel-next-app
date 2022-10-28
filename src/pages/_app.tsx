@@ -1,11 +1,10 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { AppProps } from "next/app";
 import Analytics from "../util/analytics";
 import * as gtag from "../util/gtag";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import GlobalStyles from "../styles/global";
-import "../styles/tailwind.css";
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import * as Styles from "./home.styles";
+import * as Styles from "../styles/home.styles";
 
 export default function Home() {
   return (

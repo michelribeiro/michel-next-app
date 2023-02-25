@@ -5,6 +5,7 @@ import * as gtag from "../util/gtag";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import GlobalStyles from "../styles/global";
+import "../styles/tailwind.css";
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

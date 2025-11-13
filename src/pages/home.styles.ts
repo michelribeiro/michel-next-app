@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Content = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -20,6 +21,14 @@ export const Content = styled.div`
     a {
       text-decoration: none;
       color: #333;
+    }
+  }
+  .content-Main {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    p {
+      font-size: 2rem;
     }
   }
 `;

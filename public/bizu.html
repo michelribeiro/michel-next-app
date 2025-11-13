@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Guia Completo de Siglas e Conceitos Frontend (React / Next.js)</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
+h1, h2 { color: #333; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+th { background-color: #4BB213; color: white; padding: 8px; text-align: left; }
+td { border: 1px solid #ccc; padding: 8px; vertical-align: top; word-wrap: break-word; }
+tr:nth-child(even) { background-color: #f2f2f2; }
+ul { margin-top: 0; }
+</style>
+</head>
+<body>
+
+<h1>Guia Completo de Siglas e Conceitos Frontend (React / Next.js)</h1>
+
+<h2>Índice</h2>
+<ul>
+<li>React e Next.js</li>
+<li>React / Next.js Avançado</li>
+<li>Arquitetura e Estado</li>
+<li>Testes Avançados</li>
+<li>Performance e Build</li>
+<li>APIs e Integrações</li>
+<li>Segurança e Boas Práticas</li>
+<li>Internacionalização e Acessibilidade</li>
+<li>DevOps / Deploy</li>
+<li>Soft Skills Técnicas</li>
+</ul>
+
+<!-- ===================== React e Next.js ===================== -->
+<h2>React e Next.js</h2>
+<table>
+<tr><th>Termo (Inglês / Tradução)</th><th>Significado</th><th>Descrição</th></tr>
+<tr><td>Module Federation</td><td>Federação de Módulos</td><td>Compartilha código e dependências entre aplicações em tempo de execução. Usado em microfrontends.</td></tr>
+<tr><td>Server-Driven UI</td><td>Interface Dirigida pelo Servidor</td><td>O servidor define a estrutura da interface e seus componentes. Facilita Design Systems centralizados.</td></tr>
+<tr><td>Design Tokens</td><td>Tokens de Design</td><td>Variáveis com decisões de design (cores, fontes, espaçamento) para garantir consistência visual.</td></tr>
+<tr><td>Shell Client UI</td><td>Interface Shell do Cliente</td><td>Container principal da aplicação que hospeda outros módulos ou microfrontends.</td></tr>
+<tr><td>HOC – Higher-Order Component</td><td>Componente de Ordem Superior</td><td>Função que recebe um componente e retorna outro aprimorado (ex: controle de autenticação).</td></tr>
+<tr><td>HOF – Higher-Order Function</td><td>Função de Ordem Superior</td><td>Função que aceita outra função como argumento ou retorna uma função (map, filter).</td></tr>
+<tr><td>Error Boundary</td><td>Limite de Erro</td><td>Componente que captura erros em componentes filhos, evitando que quebrem a aplicação.</td></tr>
+<tr><td>A11Y – Accessibility</td><td>Acessibilidade</td><td>Garantir que pessoas com deficiências possam usar a aplicação web de forma eficaz.</td></tr>
+<tr><td>WCAG</td><td>Diretrizes de Acessibilidade para Conteúdo Web</td><td>Conjunto internacional de regras e boas práticas de acessibilidade.</td></tr>
+<tr><td>Lighthouse</td><td>Auditor de Performance do Google</td><td>Ferramenta para medir desempenho, acessibilidade e SEO de aplicações web.</td></tr>
+<tr><td>FID – First Input Delay</td><td>Atraso da Primeira Interação</td><td>Tempo entre a primeira ação do usuário e a resposta da página.</td></tr>
+<tr><td>FCP – First Contentful Paint</td><td>Primeira Pintura de Conteúdo</td><td>Tempo até o primeiro conteúdo (texto ou imagem) aparecer na tela.</td></tr>
+<tr><td>LCP – Largest Contentful Paint</td><td>Maior Pintura de Conteúdo</td><td>Tempo até o maior elemento visual ser renderizado.</td></tr>
+<tr><td>Above the Fold</td><td>Acima da Dobra</td><td>Parte visível da página antes da rolagem; deve carregar primeiro.</td></tr>
+<tr><td>Lazy Loading</td><td>Carregamento Sob Demanda</td><td>Carrega componentes ou imagens apenas quando necessários.</td></tr>
+<tr><td>Sentry</td><td>Rastreamento de Erros</td><td>Captura e registra erros de aplicação automaticamente.</td></tr>
+<tr><td>Breadcrumbs (Sentry)</td><td>Trilha de Eventos</td><td>Histórico de ações do usuário antes de ocorrer um erro.</td></tr>
+<tr><td>Profiling</td><td>Perfilamento</td><td>Análise de desempenho da aplicação para encontrar gargalos.</td></tr>
+<tr><td>OpenTelemetry – OTel</td><td>Telemetria Aberta</td><td>Framework para coleta padronizada de métricas, logs e traces.</td></tr>
+<tr><td>Feature Flags</td><td>Sinalizadores de Funcionalidade</td><td>Ativam ou desativam recursos sem reimplantar código.</td></tr>
+<tr><td>LaunchDarkly / Unleash</td><td>Ferramentas de Feature Flags</td><td>Plataformas para controle de versões e recursos dinâmicos.</td></tr>
+<tr><td>A/B Testing</td><td>Teste A/B</td><td>Comparação de duas versões para medir desempenho e conversão.</td></tr>
+<tr><td>Optimizely / Adobe Target</td><td>Ferramentas de Teste A/B</td><td>Usadas para experimentação e otimização de interface.</td></tr>
+<tr><td>P13N – Personalization</td><td>Personalização</td><td>Customização da experiência do usuário com base em preferências e comportamento.</td></tr>
+<tr><td>I18N – Internationalization</td><td>Internacionalização</td><td>Adaptação do software para múltiplos idiomas e culturas.</td></tr>
+<tr><td>Cache (Browser, CDN, Proxy, App)</td><td>Armazenamento Temporário</td><td>Melhora o desempenho guardando dados em diferentes camadas.</td></tr>
+<tr><td>Unit Test</td><td>Teste Unitário</td><td>Testa funções isoladas para validar comportamentos específicos.</td></tr>
+<tr><td>E2E – End-to-End Test</td><td>Teste de Ponta a Ponta</td><td>Valida o fluxo completo da aplicação como um usuário real.</td></tr>
+<tr><td>AI Testing</td><td>Teste com Inteligência Artificial</td><td>Usa IA para gerar e executar testes automaticamente.</td></tr>
+<tr><td>Self-Healing Test Automation</td><td>Automação de Testes Autocorretiva</td><td>Testes que se ajustam sozinhos quando a interface muda.</td></tr>
+<tr><td>Terraform / IaC – Infrastructure as Code</td><td>Infraestrutura como Código</td><td>Criação e gerenciamento de infraestrutura via código, incluindo AWS, Azure e GCP.</td></tr>
+<tr><td>Containers</td><td>Contêineres</td><td>Ambientes isolados para empacotar e executar aplicações.</td></tr>
+<tr><td>Docker / Kubernetes</td><td>Plataformas de Contêineres</td><td>Gerenciam, orquestram e escalam aplicações em contêineres.</td></tr>
+<tr><td>Horizontal Scaling</td><td>Escala Horizontal</td><td>Aumenta a capacidade adicionando novos servidores.</td></tr>
+<tr><td>Vertical Scaling</td><td>Escala Vertical</td><td>Aumenta a capacidade de um único servidor (CPU, RAM).</td></tr>
+</table>
+
+<!-- ===================== React / Next.js Avançado ===================== -->
+<h2>React / Next.js Avançado</h2>
+<table>
+<tr><th>Tema</th><th>Descrição</th></tr>
+<tr><td>Suspense e Concurrent Rendering</td><td>Conceitos do React 18 que melhoram performance e UX permitindo carregamento gradual e interrupção de renderizações.</td></tr>
+<tr><td>React Server Components (RSC)</td><td>Nova arquitetura do React usada no Next 13+ que permite renderizar componentes no servidor, reduzindo o bundle no cliente.</td></tr>
+<tr><td>App Router (Next.js 13+)</td><td>Nova forma de estruturar rotas com app/ directory e layout.tsx, além de suporte nativo a RSC e streaming.</td></tr>
+<tr><td>Static Site Generation (SSG)</td><td>Geração estática de páginas no build para maior performance e SEO.</td></tr>
+<tr><td>Incremental Static Regeneration (ISR)</td><td>Atualiza páginas estáticas de forma incremental sem rebuild completo.</td></tr>
+<tr><td>Dynamic Imports</td><td>Carregamento dinâmico de módulos com next/dynamic para melhorar performance.</td></tr>
+<tr><td>Middleware e Edge Functions</td><td>Funções executadas na borda (edge) antes da requisição chegar ao servidor principal, otimizando autenticação e redirecionamentos.</td></tr>
+</table>
+
+<!-- ===================== Arquitetura e Estado ===================== -->
+<h2>Arquitetura e Estado</h2>
+<table>
+<tr><th>Tema</th><th>Descrição</th></tr>
+<tr><td>State Management (Gerenciamento de Estado)</td><td>Comparação entre Context API, Redux Toolkit, Zustand, Jotai e Recoil.</td></tr>
+<tr><td>React Query / TanStack Query</td><td>Ferramenta moderna para cache e sincronização de dados do servidor.</td></tr>
+<tr><td>Atomic Design</td><td>Padrão de componentização baseado em átomos, moléculas, organismos e templates.</td></tr>
+<tr><td>Clean Architecture no Frontend</td><td>Separar responsabilidades em camadas (domain, data, presentation).</td></tr>
+<tr><td>Dependency Injection (DI)</td><td>Técnicas para desacoplar dependências, tornando o código mais testável.</td></tr>
+</table>
+
+<!-- ===================== Testes Avançados ===================== -->
+<h2>Testes Avançados</h2>
+<table>
+<tr><th>Tema</th><th>Descrição</th></tr>
+<tr><td>React Testing Library (RTL)</td><td>Biblioteca moderna para testes unitários e de integração focada em comportamento do usuário.</td></tr>
+<tr><td>Cypress / Playwright</td><td>Frameworks de testes E2E modernos e robustos.</td></tr>
+<tr><td>Mock Service Worker (MSW)</td><td>Simula APIs em testes para isolar dependências externas.</td></tr>
+<tr><td>Visual Regression Testing</td><td>Compara imagens (screenshots) de telas para detectar mudanças visuais.</td></tr>
+</table>
+
+<!-- ===================== Performance e Build ===================== -->
+<h2>Performance e Build</h2>
+<table>
+<tr><th>Tema</th><th>Descrição</th></tr>
+<tr><td>Tree Shaking</td><td>Eliminação de código não utilizado durante o build.</td></tr>
+<tr><td>Code Splitting</td><td>Divisão do bundle em partes menores para carregar sob demanda.</td></tr>
+<tr><td>Babel e SWC</td><td>Compiladores usados no React/Next.js; o SWC substitui Babel em novas versões.</td></tr>
+<tr><td>Webpack vs Vite / Turbopack</td><td>Comparação entre bundlers modernos.</td></tr>
+<tr><td>Pre-fetching e Revalidation</td><td>Estratégias do Next.js para otimizar busca e cache de dados.</td></tr>
+</table>
+
+<!-- ===================== APIs e Integrações ===================== -->
+<h2>APIs e Integrações</h2>
+<table>
+<tr><th>Tema</th><th>Descrição</th></tr>
+<tr><td>REST vs GraphQL</td><td>Diferenças, vantagens e quando usar cada abordagem.</td></tr>
+<tr><td>Apollo Client / URQL</td><td>Clientes GraphQL para React.</td></tr>
+<tr><td>WebSockets e SSE</td><td>Comunicação em tempo real (ex: chats e notificações).</td></tr>
+<tr><td>tRPC</td><td>Framework para criar APIs typesafe entre frontend e backend em TypeScript.</td></tr>
+</table>
+
+<!-- ===================== Segurança e Boas Práticas ===================== -->
+<h2>Segurança e Boas Práticas</h2>
+<table>
+<tr><th>Tema</th><th>Descrição</th></tr>
+<tr><td>XSS e CSRF</td><td>Entender vulnerabilidades comuns e como preveni-las.</td></tr>
+<tr><td>Content Security Policy (CSP)</td><td>Políticas para restringir recursos externos e evitar ataques.</td></tr>
+<tr><td>OWASP Top 10</td><td>Lista das principais falhas de segurança em aplicações web.</td></tr>
+<tr><td>Env Vars (Variáveis de Ambiente)</td><td>Gerenciamento seguro de chaves e credenciais no Next.js.</td></tr>
+</table>
+
+<!-- ===================== Internacionalização e Acessibilidade ===================== -->
+<h2>Internacionalização e Acessibilidade</h2>
+<table>
+<tr><th>Tema</th><th>Descrição</th></tr>
+<tr><td>Next.js i18n Routing</td><td>Rotas e build multi-idiomas integrados ao Next.js.</td></tr>
+<tr><td>ARIA Roles</td><td>Atributos que tornam componentes acessíveis a leitores de tela.</td></tr>
+<tr><td>Color Contrast Tools</td><td>Ferramentas para medir contraste de cores (ex: Stark, axe DevTools).</td></tr>
+</table>
+
+<!-- ===================== DevOps / Deploy ===================== -->
+<h2>DevOps / Deploy</h2>
+<table>
+<tr><th>Tema</th><th>Descrição</th></tr>
+<tr><td>CI/CD (Continuous Integration / Continuous Deployment)</td><td>Automatização de testes, builds e deploys.</td></tr>
+<tr><td>Vercel / Netlify / AWS Amplify</td><td>Plataformas modernas de deploy para Next.js.</td></tr>
+<tr><td>Docker Compose</td><td>Orquestração simples de múltiplos serviços locais.</td></tr>
+<tr><td>Monitoring (Datadog / New Relic)</td><td>Ferramentas para monitorar aplicações em produção.</td></tr>
+</table>
+
+<!-- ===================== Soft Skills Técnicas ===================== -->
+<h2>Soft Skills Técnicas (que também caem em entrevistas)</h2>
+<table>
+<tr><th>Tema</th><th>Descrição</th></tr>
+<tr><td>Code Review e Pair Programming</td><td>Boas práticas para revisão e colaboração de código.</td></tr>
+<tr><td>Design Patterns (Padrões de Projeto)</td><td>Padrões como Singleton, Observer, Factory aplicados ao frontend.</td></tr>
+<tr><td>SOLID no Frontend</td><td>Princípios de design de software aplicados a componentes React.</td></tr>
+<tr><td>Documentação com Storybook</td><td>Criação e visualização de componentes isolados.</td></tr>
+<tr><td>GitFlow e Conventional Commits</td><td>Padrões de versionamento e automação de changelogs.</td></tr>
+</table>
+
+</body>
+</html>

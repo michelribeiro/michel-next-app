@@ -19,6 +19,7 @@ export function ChatWidget({ inline = false }: ChatWidgetProps) {
     isLoading,
     showLeadForm,
     leadSent,
+    limitReached,
     leadInfo,
     setLeadInfo,
     sendMessage,
@@ -159,7 +160,7 @@ export function ChatWidget({ inline = false }: ChatWidgetProps) {
       </div>
 
       {/* Input */}
-      {!leadSent && (
+      {!leadSent && !limitReached && (
         <form onSubmit={handleSubmit} className="border-t border-white/5 p-4">
           <div className="flex gap-2">
             <input

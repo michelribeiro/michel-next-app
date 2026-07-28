@@ -137,7 +137,21 @@ São contextos diferentes, treinamentos diferentes, mas o motor é o mesmo (Deep
 
 ---
 
-## 7. Próximos passos
+## 7. Segurança do Chat
+
+### ✅ Implementado (Camada 1)
+- Limite de 10 mensagens por sessão (5 idas e vindas)
+- Bloqueio no frontend e no backend (API retorna 429)
+- Mensagem amigável quando atinge o limite + convite pra deixar contato
+
+### ⏳ Futuro (Camada 2 — Upstash)
+- Rate limit por IP via Upstash Redis (10.000 comandos/dia grátis)
+- Bloqueio automático de IPs abusivos
+- Dependências: `@upstash/redis`, `@upstash/ratelimit`
+
+---
+
+## 8. Próximos passos
 
 - [ ] Aprovar estrutura
 - [ ] Definir cores / identidade visual

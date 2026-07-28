@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { env } from "@/config/env";
 
+const MAX_MESSAGE_COUNT = 10; // Max user messages per session
+
 const SYSTEM_PROMPT = `Você é o Robô Vendedor, um assistente de vendas de um serviço chamado "Robô Vendedor com IA".
 
 Seu papel é explicar o serviço para donos de pequenos negócios e capturar leads interessados.
@@ -25,7 +27,15 @@ Um sistema que permite ao dono do negócio ter uma página de vendas com IA que 
 
 export async function POST(request: NextRequest) {
   try {
-    const { message, history } = await request.json();
+    const { message, history, messageCount } = await request.json();
+
+    // Server-side rate limit check
+    if (messageCount && messageCount > MAX_MESSAGE_COUNT) {
+      return NextResponse.json(
+        { error: "Limite de mensagens atingido" },
+        { status: 429 }
+      );
+    }
 
     if (!env.deepseek.apiKey) {
       return NextResponse.json(

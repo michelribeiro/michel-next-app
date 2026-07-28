@@ -31,9 +31,10 @@ export async function GET(request: NextRequest) {
     const leads = await listLeads();
     return NextResponse.json(leads);
   } catch (error) {
-    console.error("Erro ao listar leads:", error);
+    console.error("Erro ao listar leads:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    const msg = error instanceof Error ? error.message : "Erro desconhecido";
     return NextResponse.json(
-      { error: `Erro ao carregar leads: ${error instanceof Error ? error.message : "Erro desconhecido"}` },
+      { error: `Erro ao carregar leads: ${msg}` },
       { status: 500 }
     );
   }

@@ -30,8 +30,8 @@ export async function saveLead(lead: Omit<Lead, "id" | "created_at">) {
     .select();
 
   if (error) {
-    console.error("Erro ao salvar lead:", error);
-    throw error;
+    console.error("Erro ao salvar lead:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
   }
 
   return data?.[0] as Lead | undefined;
@@ -44,8 +44,8 @@ export async function listLeads() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Erro ao listar leads:", error);
-    throw error;
+    console.error("Erro ao listar leads:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
   }
 
   return data as Lead[];
@@ -61,7 +61,7 @@ export async function updateLeadStatus(
     .eq("id", id);
 
   if (error) {
-    console.error("Erro ao atualizar lead:", error);
-    throw error;
+    console.error("Erro ao atualizar lead:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
   }
 }

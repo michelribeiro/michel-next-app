@@ -39,10 +39,14 @@ export default function AdminPage() {
         return;
       }
       const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Erro ao carregar leads");
+        return;
+      }
       setLeads(data);
       setError("");
-    } catch {
-      setError("Erro ao carregar leads");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao carregar leads");
     } finally {
       setLoading(false);
     }

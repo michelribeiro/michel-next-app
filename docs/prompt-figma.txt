@@ -1,0 +1,81 @@
+# Prompt para Figma AI
+
+Cole o prompt abaixo no Figma AI (ou em qualquer gerador de layout):
+
+---
+
+Create a landing page design for a SaaS product called "Robô Vendedor" (Portuguese for "Sales Robot"). The product is an AI-powered sales assistant that works 24/7 via WhatsApp, answering customer questions and capturing leads automatically.
+
+## Style
+- Clean, modern SaaS aesthetic (similar to Vercel, Linear, Raycast landing pages)
+- Dark theme (#0a0a0a background) or clean light theme (off-white) — choose what looks better
+- Accent color: bright blue or violet (#3b82f6 or #7c3aed)
+- Sans-serif typography (Inter or similar)
+- Generous whitespace
+- Smooth rounded corners on cards and buttons
+
+## Layout Structure (top to bottom)
+
+### 1. Navigation (fixed top)
+- Logo on the left: "Robô Vendedor" or simple robot icon
+- Navigation links: "Como funciona" (How it works) | "Contato" (Contact)
+- No pricing in the nav
+
+### 2. Hero Section
+- Headline: "Seu robô vendedor 24 horas por dia" (Your sales robot 24/7)
+- Subheadline: "IA que atende, tira dúvidas e captura leads enquanto você trabalha." (AI that serves, answers questions and captures leads while you work.)
+- Two CTA buttons:
+  - Primary: "Quero meu robô vendedor" (filled button)
+  - Secondary: "Ver demonstração" (outlined button)
+- Right side: A mockup showing a smartphone screen with a chat interface running
+- The mockup should show a conversation between a customer and the AI robot
+
+### 3. How It Works (3 steps)
+- Title: "Como funciona"
+- Three horizontal cards/columns:
+  1. "1. Cadastre seus produtos" (Register your products) — icon: box/package
+  2. "2. Compartilhe o link" (Share the link) — icon: link/share
+  3. "3. IA atende e captura leads" (AI serves and captures leads) — icon: message/chat
+
+### 4. Benefits Section
+- Title: "Por que escolher?" (Why choose it?)
+- Grid of 4 benefit cards with icons:
+  - ⏰ "Atendimento 24h" — Never lose a sale due to delay
+  - 🎯 "Lead qualificado" — Only qualified leads reach you
+  - 🤖 "Respostas inteligentes" — AI trained on YOUR products
+  - 📈 "Mais vendas" — Increase sales without more work
+
+### 5. Live Demo / Chat Section
+- Title: "Experimente agora mesmo" (Try it right now)
+- Subtitle: "Este chat é seu robô funcionando. Teste!" (This chat is your robot working. Test it!)
+- A live chat widget/box in the center of the page showing:
+  - AI greeting message bubble: "Olá! 👋 Me conta qual seu negócio que eu te explico como posso ajudar."
+  - Input field at the bottom: "Digite sua mensagem..." with a send button
+  - A floating chat button visible on all sections
+
+### 6. Target Audience Section
+- Title: "Para quem é?" (Who is it for?)
+- List of audience types with small icons:
+  - Lojas físicas que vendem no WhatsApp (Physical stores selling on WhatsApp)
+  - Profissionais autônomos (Freelancers: personal trainers, nutritionists)
+  - Prestadores de serviço (Service providers)
+  - Qualquer um que perde venda por demora (Anyone losing sales due to delay)
+
+### 7. Final CTA Section
+- Headline: "Quer levar isso pro seu negócio?" (Want to bring this to your business?)
+- Large CTA button: "Quero meu robô vendedor →"
+- Below: "Sem compromisso. Teste grátis." (No commitment. Free trial.)
+
+### 8. Footer
+- Copyright year
+- Contact information
+- Simple, minimal
+
+## Key Design Notes
+- A floating chat button should be visible in the bottom-right corner across ALL sections (like Intercom/Drift style)
+- Use gradient accents subtly
+- Keep it conversion-focused: each section leads to the CTA
+- Mobile responsive layout (stack vertically on mobile)
+- Use subtle animations suggestions (fade in on scroll)
+- Portuguese language throughout
+- No pricing information anywhere

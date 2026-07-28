@@ -1,14 +1,27 @@
+import { Header } from "@/ui/components/landing/Header";
+import { Hero } from "@/ui/components/landing/Hero";
+import { HowItWorks } from "@/ui/components/landing/HowItWorks";
+import { Benefits } from "@/ui/components/landing/Benefits";
+import { LiveDemo } from "@/ui/components/landing/LiveDemo";
+import { TargetAudience } from "@/ui/components/landing/TargetAudience";
+import { FinalCTA } from "@/ui/components/landing/FinalCTA";
+import { Footer } from "@/ui/components/landing/Footer";
+import { ChatWidget } from "@/ui/components/chat/ChatWidget";
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
-      <main className="text-center">
-        <h1 className="text-4xl font-bold text-zinc-800 dark:text-zinc-100">
-          🚧 Em Construção
-        </h1>
-        <p className="mt-4 text-lg text-zinc-500 dark:text-zinc-400">
-          Em breve, novidades por aqui!
-        </p>
+    <>
+      <Header />
+      <main>
+        <Hero />
+        <HowItWorks />
+        <Benefits />
+        <LiveDemo />
+        <TargetAudience />
+        <FinalCTA />
       </main>
-    </div>
+      <Footer />
+      <ChatWidget />
+    </>
   );
 }

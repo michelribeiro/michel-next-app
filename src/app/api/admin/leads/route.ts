@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { listLeads, updateLeadStatus } from "@/core/infrastructure/database/supabase";
+import { listLeads, updateLeadStatus, deleteLead } from "@/core/infrastructure/database/supabase";
 
 function checkAuth(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
@@ -62,6 +62,31 @@ export async function PATCH(request: NextRequest) {
     console.error("Erro ao atualizar lead:", error);
     return NextResponse.json(
       { error: `Erro ao atualizar lead: ${error instanceof Error ? error.message : "Erro desconhecido"}` },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  const auth = checkAuth(request);
+  if (!auth.authorized) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+  }
+
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = Number(searchParams.get("id"));
+
+    if (!id) {
+      return NextResponse.json({ error: "ID é obrigatório" }, { status: 400 });
+    }
+
+    await deleteLead(id);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Erro ao deletar lead:", error);
+    return NextResponse.json(
+      { error: `Erro ao deletar lead: ${error instanceof Error ? error.message : "Erro desconhecido"}` },
       { status: 500 }
     );
   }

@@ -97,6 +97,15 @@ export default function AdminPage() {
     fetchLeads();
   };
 
+  const handleDelete = async (id: number) => {
+    if (!confirm("Tem certeza que deseja excluir este lead?")) return;
+    await fetch(`/api/admin/leads?id=${id}`, {
+      method: "DELETE",
+      headers: { authorization: `Bearer ${token}` },
+    });
+    fetchLeads();
+  };
+
   const handleLogout = () => {
     sessionStorage.removeItem("admin_token");
     setToken(null);
@@ -223,21 +232,29 @@ export default function AdminPage() {
                       })}
                     </td>
                     <td className="px-4 py-3">
-                      <select
-                        value={lead.status}
-                        onChange={(e) =>
-                          handleStatus(
-                            lead.id,
-                            e.target.value as Lead["status"]
-                          )
-                        }
-                        className="rounded-lg border border-white/10 bg-zinc-800 px-2 py-1 text-xs text-white outline-none focus:border-violet-500"
-                      >
-                        <option value="novo">Novo</option>
-                        <option value="contatado">Contatado</option>
-                        <option value="convertido">Convertido</option>
-                        <option value="perdido">Perdido</option>
-                      </select>
+                      <div className="flex items-center gap-2">
+                        <select
+                          value={lead.status}
+                          onChange={(e) =>
+                            handleStatus(
+                              lead.id,
+                              e.target.value as Lead["status"]
+                            )
+                          }
+                          className="rounded-lg border border-white/10 bg-zinc-800 px-2 py-1 text-xs text-white outline-none focus:border-violet-500"
+                        >
+                          <option value="novo">Novo</option>
+                          <option value="contatado">Contatado</option>
+                          <option value="convertido">Convertido</option>
+                          <option value="perdido">Perdido</option>
+                        </select>
+                        <button
+                          onClick={() => handleDelete(lead.id)}
+                          className="rounded-lg border border-red-500/20 bg-red-500/10 px-2 py-1 text-xs text-red-400 transition-all hover:bg-red-500/20"
+                        >
+                          Excluir
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

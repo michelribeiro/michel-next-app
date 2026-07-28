@@ -5,6 +5,17 @@ import { useState } from "react";
 export function FinalCTA() {
   const [name, setName] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+
+  const formatPhone = (value: string) => {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    if (digits.length <= 2) return `(${digits}`;
+    if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+  };
+
+  const handlePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWhatsapp(formatPhone(e.target.value));
+  };
   const [segmento, setSegmento] = useState("");
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -80,9 +91,9 @@ export function FinalCTA() {
                 />
                 <input
                   type="tel"
-                  placeholder="Seu WhatsApp com DDD"
+                  placeholder="(11) 99999-9999"
                   value={whatsapp}
-                  onChange={(e) => setWhatsapp(e.target.value)}
+                  onChange={handlePhone}
                   required
                   className="w-full rounded-xl border border-white/10 bg-zinc-800 px-5 py-3.5 text-sm text-white placeholder-zinc-500 outline-none transition-colors focus:border-violet-500"
                 />

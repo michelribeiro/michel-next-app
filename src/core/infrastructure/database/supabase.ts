@@ -65,3 +65,12 @@ export async function updateLeadStatus(
     throw new Error(error.message || "Erro desconhecido no Supabase");
   }
 }
+
+export async function deleteLead(id: number) {
+  const { error } = await supabase.from("leads").delete().eq("id", id);
+
+  if (error) {
+    console.error("Erro ao deletar lead:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
+  }
+}

@@ -12,33 +12,31 @@ const benefits = [
     ),
   },
   {
-    title: "Lead qualificado",
-    description: "Só chegam até você clientes que já foram qualificados e têm interesse real.",
+    title: "Disparo WhatsApp",
+    description: "IA chama o lead no privado automaticamente. Cliente responde, robô continua a conversa.",
     bg: "rgba(59, 130, 246, 0.094)",
     color: "rgb(59, 130, 246)",
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="11" cy="11" r="5" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="11" cy="11" r="1.5" fill="currentColor" />
+        <path d="M17 2a3 3 0 013 3v8a3 3 0 01-3 3h-5l-5 5v-5H5a3 3 0 01-3-3V5a3 3 0 013-3h12z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
   },
   {
-    title: "Respostas inteligentes",
-    description: "IA treinada nos SEUS produtos. Cada resposta é específica para o seu negócio.",
+    title: "Checkout integrado",
+    description: "PIX, boleto e cartão de crédito. O cliente compra sem sair do robô.",
     bg: "rgba(139, 92, 246, 0.094)",
     color: "rgb(139, 92, 246)",
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <path d="M9.5 2a4.5 4.5 0 014.5 4.5v.5M9.5 2A4.5 4.5 0 005 6.5v1A3.5 3.5 0 002 11a3.5 3.5 0 003.5 3.5V20h11v-5.5A3.5 3.5 0 0020 11a3.5 3.5 0 00-3-3.47V7A4.5 4.5 0 0012.5 2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M9 13h4M9 16h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <rect x="2" y="5" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <circle cx="11" cy="11.5" r="3" stroke="currentColor" strokeWidth="1.5" />
       </svg>
     ),
   },
   {
-    title: "Mais vendas",
-    description: "Aumente sua conversão sem contratar mais atendentes ou expandir sua equipe.",
+    title: "Dashboard completo",
+    description: "Gráficos de leads, vendas e conversão. Você vê exatamente onde está ganhando dinheiro.",
     bg: "rgba(16, 185, 129, 0.094)",
     color: "rgb(16, 185, 129)",
     icon: (

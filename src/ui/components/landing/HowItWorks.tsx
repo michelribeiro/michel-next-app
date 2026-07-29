@@ -27,8 +27,8 @@ const steps = [
   },
   {
     number: "3",
-    title: "IA atende e captura leads",
-    description: "A IA tira dúvidas 24h, recomenda os produtos certos e captura nome e WhatsApp de quem quer comprar.",
+    title: "IA vende, dispara e finaliza",
+    description: "IA tira dúvidas, recomenda produtos, dispara WhatsApp automático e finaliza a venda no checkout. Tudo sem você fazer nada.",
     color: "from-violet-600/20 to-violet-600/5 text-violet-400 border-violet-500/20",
     iconColor: "rgba(139, 92, 246, 0.094)",
     iconStroke: "rgb(139, 92, 246)",
@@ -49,7 +49,7 @@ export function HowItWorks() {
             Como funciona
           </h2>
           <p className="mt-4 text-lg text-zinc-400">
-            Você cadastra os produtos, recebe uma página com IA e compartilha o link
+            Cadastre os produtos, receba a página com IA e veja as vendas acontecerem
           </p>
         </div>
 

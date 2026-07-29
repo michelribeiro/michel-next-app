@@ -6,6 +6,9 @@ interface LeadData {
 }
 
 export function leadEmailTemplate(lead: LeadData): string {
+  const isPlanLead = lead.segmento?.startsWith("Plano:");
+  const planName = isPlanLead ? lead.segmento.replace("Plano: ", "") : "";
+
   return `
 <!DOCTYPE html>
 <html>
@@ -17,6 +20,7 @@ export function leadEmailTemplate(lead: LeadData): string {
     .header { background: linear-gradient(135deg, #7c3aed, #3b82f6); padding: 32px; text-align: center; }
     .header h1 { color: #fff; margin: 0; font-size: 24px; }
     .header p { color: rgba(255,255,255,0.8); margin: 8px 0 0; font-size: 14px; }
+    .plan-badge { display: inline-block; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 16px; color: #fff; font-weight: 600; font-size: 13px; margin-top: 12px; }
     .body { padding: 32px; }
     .field { margin-bottom: 24px; }
     .field-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 4px; }
@@ -24,14 +28,16 @@ export function leadEmailTemplate(lead: LeadData): string {
     .conversa { font-size: 14px; color: #ccc; background: #2a2a2a; padding: 16px; border-radius: 8px; line-height: 1.6; white-space: pre-wrap; }
     .cta { text-align: center; margin-top: 32px; }
     .cta a { display: inline-block; background: linear-gradient(135deg, #7c3aed, #3b82f6); color: #fff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; }
+    .cta .whatsapp-btn { background: #25D366; margin-top: 8px; }
     .footer { text-align: center; padding: 24px; color: #666; font-size: 12px; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>🎯 Novo Lead Capturado!</h1>
-      <p>Robô Vendedor acabou de qualificar mais um lead</p>
+      <h1>${isPlanLead ? "💰 Novo Pedido de Plano!" : "🎯 Novo Lead Capturado!"}</h1>
+      <p>${isPlanLead ? "Alguém se interessou e escolheu um plano" : "Robô Vendedor acabou de qualificar mais um lead"}</p>
+      ${isPlanLead ? `<div class="plan-badge">📋 ${planName}</div>` : ""}
     </div>
     <div class="body">
       <div class="field">
@@ -46,16 +52,17 @@ export function leadEmailTemplate(lead: LeadData): string {
           </a>
         </div>
       </div>
+      ${!isPlanLead ? `
       <div class="field">
         <div class="field-label">Segmento</div>
         <div class="field-value">${lead.segmento || "Não informado"}</div>
-      </div>
+      </div>` : ""}
       <div class="field">
-        <div class="field-label">Conversa com a IA</div>
+        <div class="field-label">Conversa</div>
         <div class="conversa">${lead.conversa || "N/A"}</div>
       </div>
       <div class="cta">
-        <a href="https://wa.me/${lead.whatsapp.replace(/\D/g, "")}" target="_blank">
+        <a href="https://wa.me/${lead.whatsapp.replace(/\D/g, "")}" target="_blank" class="whatsapp-btn">
           💬 Chamar no WhatsApp
         </a>
       </div>

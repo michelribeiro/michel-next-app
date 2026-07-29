@@ -65,7 +65,17 @@
 
 ### 2.7 Preço / Planos
 
-- [ ] A definir — enquanto não decide, "Sob consulta" ou valor sugerido
+| Plano | Preço | Funcionalidades |
+|-------|-------|----------------|
+| 🟢 **Básico** | **R$ 49/mês** | Página + IA + leads ilimitados + Checkout (ASAAS) + até 30 produtos |
+| 🟡 **Evolution** | **R$ 97/mês** | Tudo do Básico + WhatsApp 1:1 + Disparo em grupo (até 3) + Dashboard + produtos ilimitados |
+| 🔴 **Pro** | **R$ 197/mês** | Tudo do Evolution + Cloud API (oficial) + Instagram + 10 grupos + Domínio próprio |
+
+**Implantação (todos os planos):** R$ 197 único — configurar produtos, conectar WhatsApp, treinar IA
+
+**Gateway:** ASAAS para todos os planos (boleto, cartão, PIX). Sem escolha do cliente — mantemos 1 gateway pra simplicidade.
+
+**Storage de imagens:** Cloudinary (25GB grátis). Plano Básico: até 30 fotos. Evolution/Pro: ilimitado.
 
 ### 2.8 CTA Final
 

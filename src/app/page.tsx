@@ -2,6 +2,7 @@ import { Header } from "@/ui/components/landing/Header";
 import { Hero } from "@/ui/components/landing/Hero";
 import { HowItWorks } from "@/ui/components/landing/HowItWorks";
 import { Benefits } from "@/ui/components/landing/Benefits";
+import { PricingSection } from "@/ui/components/landing/PricingSection";
 import { LiveDemo } from "@/ui/components/landing/LiveDemo";
 import { TargetAudience } from "@/ui/components/landing/TargetAudience";
 import { FinalCTA } from "@/ui/components/landing/FinalCTA";
@@ -18,6 +19,7 @@ export default function Home() {
         <Benefits />
         <LiveDemo />
         <TargetAudience />
+        <PricingSection />
         <FinalCTA />
       </main>
       <Footer />

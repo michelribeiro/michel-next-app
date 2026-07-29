@@ -102,7 +102,7 @@ export function FinalCTA() {
                   onChange={(e) => setSegmento(e.target.value)}
                   className="w-full rounded-xl border border-white/10 bg-zinc-800 px-5 py-3.5 text-sm text-white outline-none transition-colors focus:border-violet-500"
                 >
-                  <option value="">Qual seu segmento?</option>
+                  <option value="">Qual seu negócio?</option>
                   <option value="Loja física">Loja física</option>
                   <option value="Loja online">Loja online</option>
                   <option value="Serviços">Prestador de serviço</option>

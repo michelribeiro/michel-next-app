@@ -8,7 +8,9 @@
 
 | # | Task | Prioridade | Início |
 |---|------|-----------|--------|
-| 001 | [Definir Nicho + Oferta](./001-definir-nicho-oferta.md) | 🔴 alta | 26/07 |
+| 001 | [Definir Nicho + Oferta](./001-definir-nicho-oferta.md) | 🟡 média | 26/07 |
+| 002 | [Planejar Evolução do Robô](./002-planejar-evolucao-robo.md) | 🔴 alta | 28/07 |
+| 003 | [Planos e Precificação](./003-planos-e-precificacao.md) | ✅ concluida | 28/07 |
 
 ---
 

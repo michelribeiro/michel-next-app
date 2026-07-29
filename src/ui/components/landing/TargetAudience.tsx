@@ -43,18 +43,18 @@ export function TargetAudience() {
                 color: "rgb(96, 165, 250)",
               }}
             >
-              Para quem é?
+              Pra quem vende no digital
             </div>
 
             <h2 className="mb-6 text-3xl font-black tracking-tight text-white md:text-4xl">
-              Para quem vende{" "}
+              Pra quem quer{" "}
               <span className="bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
-                pelo WhatsApp
+                vender 24h por dia
               </span>
             </h2>
 
             <p className="mb-8 leading-relaxed text-gray-500">
-              Se você perde vendas por não conseguir responder a tempo, o Robô Vendedor foi feito para você.
+              Se você vende pelo WhatsApp, Instagram ou loja física, o Robô Vendedor atende, dispara e finaliza por você.
             </p>
 
             <div className="space-y-4">

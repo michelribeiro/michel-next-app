@@ -9,53 +9,61 @@ interface LeadData {
   conversa: string;
 }
 
-function canSendEmail() {
-  const smtpHost = process.env.SMTP_HOST;
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.EMAIL_APP_PASSWORD || process.env.SMTP_PASS;
-  const smtpFrom = process.env.SMTP_FROM || smtpUser;
-  return !!(smtpHost && smtpUser && smtpPass && smtpFrom);
-}
-
-function createTransport() {
-  const smtpHost = process.env.SMTP_HOST;
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.EMAIL_APP_PASSWORD || process.env.SMTP_PASS;
+function getConfig() {
+  const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
   const smtpPort = Number(process.env.SMTP_PORT || 587);
   const smtpSecure = process.env.SMTP_SECURE === "true";
+  const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER || "";
+  const smtpPass =
+    process.env.EMAIL_APP_PASSWORD ||
+    process.env.SMTP_PASS ||
+    process.env.EMAIL_PASS ||
+    "";
+  const smtpFrom = process.env.SMTP_FROM || `"Robô Vendedor" <${smtpUser}>`;
+  const emailTo = env.email.to || process.env.EMAIL_TO || "";
 
-  return nodemailer.createTransport({
-    host: smtpHost,
-    port: smtpPort,
-    secure: smtpSecure,
-    auth: { user: smtpUser, pass: smtpPass },
-  });
+  const missing: string[] = [];
+  if (!smtpUser) missing.push("SMTP_USER/EMAIL_USER");
+  if (!smtpPass) missing.push("EMAIL_APP_PASSWORD/EMAIL_PASS");
+  if (!emailTo) missing.push("EMAIL_TO");
+
+  return { smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass, smtpFrom, emailTo, missing };
 }
 
 export async function sendLeadEmail(lead: LeadData) {
-  if (!canSendEmail()) {
-    console.warn("📧 E-mail não configurado (SMTP_HOST/SMTP_USER/EMAIL_APP_PASSWORD). Lead não enviado.");
+  const config = getConfig();
+
+  if (config.missing.length > 0) {
+    console.warn(`📧 Envio de e-mail desabilitado. Variáveis faltando: ${config.missing.join(", ")}`);
     return;
   }
 
+  // Log que tentou (visível nos logs da Vercel)
+  console.log(`📧 Tentando enviar e-mail para ${config.emailTo} via ${config.smtpUser}...`);
+
   try {
-    const transport = createTransport();
-    const smtpFrom = process.env.SMTP_FROM || process.env.SMTP_USER || "";
+    const transporter = nodemailer.createTransport({
+      host: config.smtpHost,
+      port: config.smtpPort,
+      secure: config.smtpSecure,
+      auth: { user: config.smtpUser, pass: config.smtpPass },
+      connectionTimeout: 15000,
+    });
 
     const isPlanLead = lead.segmento?.startsWith("Plano:");
     const subject = isPlanLead
       ? `💰 Plano escolhido: ${lead.name} - ${lead.segmento.replace("Plano: ", "")}`
       : `🎯 Novo Lead: ${lead.name} - ${lead.segmento || "Sem segmento"}`;
 
-    await transport.sendMail({
-      from: smtpFrom,
-      to: env.email.to,
+    await transporter.sendMail({
+      from: config.smtpFrom,
+      to: config.emailTo,
       subject,
       html: leadEmailTemplate(lead),
     });
 
-    console.log("📧 E-mail enviado com sucesso");
+    console.log("📧 E-mail enviado com sucesso!");
   } catch (error) {
-    console.error("📧 Erro ao enviar e-mail:", error);
+    console.error("📧 Erro ao enviar e-mail:", error instanceof Error ? error.message : error);
   }
 }

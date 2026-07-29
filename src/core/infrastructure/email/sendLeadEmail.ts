@@ -9,48 +9,53 @@ interface LeadData {
   conversa: string;
 }
 
+function canSendEmail() {
+  const smtpHost = process.env.SMTP_HOST;
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.EMAIL_APP_PASSWORD || process.env.SMTP_PASS;
+  const smtpFrom = process.env.SMTP_FROM || smtpUser;
+  return !!(smtpHost && smtpUser && smtpPass && smtpFrom);
+}
+
+function createTransport() {
+  const smtpHost = process.env.SMTP_HOST;
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.EMAIL_APP_PASSWORD || process.env.SMTP_PASS;
+  const smtpPort = Number(process.env.SMTP_PORT || 587);
+  const smtpSecure = process.env.SMTP_SECURE === "true";
+
+  return nodemailer.createTransport({
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpSecure,
+    auth: { user: smtpUser, pass: smtpPass },
+  });
+}
+
 export async function sendLeadEmail(lead: LeadData) {
-  if (!env.email.user || !env.email.pass || !env.email.to) {
-    console.warn("📧 E-mail não configurado. Lead não enviado.");
+  if (!canSendEmail()) {
+    console.warn("📧 E-mail não configurado (SMTP_HOST/SMTP_USER/EMAIL_APP_PASSWORD). Lead não enviado.");
     return;
   }
 
-  // Try port 587 (STARTTLS) first, fallback to 465 (SSL)
-  const makeTransporter = (port: number, secure: boolean) =>
-    nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port,
-      secure,
-      auth: {
-        user: env.email.user,
-        pass: env.email.pass,
-      },
-      connectionTimeout: 10000,
-    });
-
-  const html = leadEmailTemplate(lead);
-
-  const send = async (port: number, secure: boolean) => {
-    const transporter = makeTransporter(port, secure);
-    await transporter.sendMail({
-      from: `"Robô Vendedor" <${env.email.user}>`,
-      to: env.email.to,
-      subject: lead.segmento?.startsWith("Plano:")
-        ? `💰 Plano escolhido: ${lead.name} - ${lead.segmento.replace("Plano: ", "")}`
-        : `🎯 Novo Lead: ${lead.name} - ${lead.segmento || "Sem segmento"}`,
-      html,
-      replyTo: env.email.user,
-    });
-  };
-
   try {
-    await send(587, false);
-  } catch {
-    console.warn("📧 Porta 587 falhou, tentando 465...");
-    try {
-      await send(465, true);
-    } catch (err) {
-      console.error("📧 Erro ao enviar e-mail em ambas portas:", err);
-    }
+    const transport = createTransport();
+    const smtpFrom = process.env.SMTP_FROM || process.env.SMTP_USER || "";
+
+    const isPlanLead = lead.segmento?.startsWith("Plano:");
+    const subject = isPlanLead
+      ? `💰 Plano escolhido: ${lead.name} - ${lead.segmento.replace("Plano: ", "")}`
+      : `🎯 Novo Lead: ${lead.name} - ${lead.segmento || "Sem segmento"}`;
+
+    await transport.sendMail({
+      from: smtpFrom,
+      to: env.email.to,
+      subject,
+      html: leadEmailTemplate(lead),
+    });
+
+    console.log("📧 E-mail enviado com sucesso");
+  } catch (error) {
+    console.error("📧 Erro ao enviar e-mail:", error);
   }
 }

@@ -3,8 +3,6 @@ export const env = {
     apiKey: process.env.DEEPSEEK_API_KEY || "",
   },
   email: {
-    user: process.env.EMAIL_USER || "",
-    pass: process.env.EMAIL_PASS || "",
     to: process.env.EMAIL_TO || "",
   },
 } as const;
@@ -13,8 +11,9 @@ export function validateEnv() {
   const missing: string[] = [];
 
   if (!env.deepseek.apiKey) missing.push("DEEPSEEK_API_KEY");
-  if (!env.email.user) missing.push("EMAIL_USER");
-  if (!env.email.pass) missing.push("EMAIL_PASS");
+  if (!process.env.SMTP_HOST) missing.push("SMTP_HOST");
+  if (!process.env.SMTP_USER) missing.push("SMTP_USER");
+  if (!process.env.EMAIL_APP_PASSWORD) missing.push("EMAIL_APP_PASSWORD");
   if (!env.email.to) missing.push("EMAIL_TO");
 
   if (missing.length > 0) {

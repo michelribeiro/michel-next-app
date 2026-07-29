@@ -1,7 +1,6 @@
 # Variáveis de Ambiente
 
-> Valores reais estão em `.env` (gitignored).  
-> Use este arquivo como referência das variáveis necessárias.
+> Valores reais estão em `.env` (gitignored).
 
 ---
 
@@ -11,11 +10,14 @@
 DEEPSEEK_API_KEY=sk-...
 ```
 
-## E-mail (Nodemailer)
+## E-mail (mesmo padrão do Afiliado Elite)
 
 ```
-EMAIL_USER=seu@email.com
-EMAIL_PASS=sua-senha-de-app
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=seu@email.com
+EMAIL_APP_PASSWORD=sua-senha-de-app
+SMTP_FROM="Nome <seu@email.com>"
 EMAIL_TO=seu@email.com
 ```
 
@@ -36,12 +38,15 @@ ADMIN_PASSWORD=sua-senha-aqui
 
 ## Resumo Vercel (copiar e colar)
 
-| Nome | Valor |
-|------|-------|
-| `DEEPSEEK_API_KEY` | ✅ No .env |
-| `EMAIL_USER` | ✅ No .env |
-| `EMAIL_PASS` | ✅ No .env |
-| `EMAIL_TO` | ✅ No .env |
-| `NEXT_PUBLIC_SUPABASE_URL` | ✅ No .env |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ No .env |
-| `ADMIN_PASSWORD` | ✅ No .env |
+| Nome | Obrigatório |
+|------|------------|
+| `DEEPSEEK_API_KEY` | ✅ |
+| `SMTP_HOST` | ✅ |
+| `SMTP_PORT` | ✅ |
+| `SMTP_USER` | ✅ |
+| `EMAIL_APP_PASSWORD` | ✅ |
+| `SMTP_FROM` | ✅ |
+| `EMAIL_TO` | ✅ |
+| `NEXT_PUBLIC_SUPABASE_URL` | ✅ |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ |
+| `ADMIN_PASSWORD` | ✅ |

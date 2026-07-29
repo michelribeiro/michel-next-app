@@ -22,13 +22,13 @@ export async function POST(request: NextRequest) {
       conversa: conversa || "",
     });
 
-    // Send email notification (non-blocking)
-    sendLeadEmail({
+    // Send email notification
+    await sendLeadEmail({
       name,
       whatsapp,
       segmento: segmento || "",
       conversa: conversa || "",
-    }).catch((err) => console.error("Erro ao enviar e-mail:", err));
+    });
 
     console.log("✅ Lead salvo:", { name, whatsapp, segmento, id: lead?.id });
 

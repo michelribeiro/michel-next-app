@@ -25,6 +25,7 @@ export default function AdminPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
 
   const fetchLeads = useCallback(async () => {
     if (!token) return;
@@ -98,12 +99,12 @@ export default function AdminPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Tem certeza que deseja excluir este lead?")) return;
+    setConfirmDeleteId(null);
     await fetch(`/api/admin/leads?id=${id}`, {
       method: "DELETE",
       headers: { authorization: `Bearer ${token}` },
     });
-    fetchLeads();
+    setLeads((prev) => prev.filter((l) => l.id !== id));
   };
 
   const handleLogout = () => {
@@ -182,7 +183,10 @@ export default function AdminPage() {
             Nenhum lead capturado ainda.
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-white/5">
+          <div
+            className="overflow-x-auto rounded-2xl border border-white/5"
+            onClick={() => setConfirmDeleteId(null)}
+          >
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-white/5 bg-zinc-900">
@@ -248,12 +252,27 @@ export default function AdminPage() {
                           <option value="convertido">Convertido</option>
                           <option value="perdido">Perdido</option>
                         </select>
-                        <button
-                          onClick={() => handleDelete(lead.id)}
-                          className="rounded-lg border border-red-500/20 bg-red-500/10 px-2 py-1 text-xs text-red-400 transition-all hover:bg-red-500/20"
-                        >
-                          Excluir
-                        </button>
+                        {confirmDeleteId === lead.id ? (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(lead.id);
+                            }}
+                            className="rounded-lg border border-red-500/40 bg-red-500/30 px-2 py-1 text-xs font-medium text-white transition-all hover:bg-red-500/50"
+                          >
+                            Confirmar
+                          </button>
+                        ) : (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setConfirmDeleteId(lead.id);
+                            }}
+                            className="rounded-lg border border-red-500/20 bg-red-500/10 px-2 py-1 text-xs text-red-400 transition-all hover:bg-red-500/30"
+                          >
+                            Excluir
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

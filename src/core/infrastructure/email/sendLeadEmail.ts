@@ -23,8 +23,7 @@ export async function sendLeadEmail(lead: LeadData) {
       secure,
       auth: {
         user: env.email.user,
-        // Strip spaces from app password (Google generates with spaces)
-        pass: env.email.pass.replace(/\s/g, ""),
+        pass: env.email.pass,
       },
       connectionTimeout: 10000,
     });

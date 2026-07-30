@@ -1,7 +1,7 @@
 # Memória do Projeto — Michel Next App
 
 > **Propósito:** Manter contexto contínuo entre sessões e decisões.  
-> **Última atualização:** 28/07/2025
+> **Última atualização:** 29/07/2025
 
 ---
 
@@ -80,6 +80,15 @@
 | 28/07 | Planos: Básico R$49 / Evolution R$97 / Pro R$197 | ✅ Definido |
 | 28/07 | Implantação: R$197 único | ✅ Definido |
 | 28/07 | E-mail: SMTP Gmail com await (igual Afiliado Elite) | ✅ Funcionando |
+| 28/07 | Regras de Negócio documentadas na `especificacao-produto.md` | ✅ Documentado |
+| 28/07 | Provisionamento automático via ASAAS (webhook) + e-mail boas-vindas | ✅ Decidido |
+| 28/07 | Pagamentos visíveis apenas no sistema (sem acesso externo) | ✅ Decidido |
+| 28/07 | Comissões para parceiros/afiliados com recorrência | ✅ Planejado |
+| 28/07 | Painel do cliente com navegação inteligente por plano + módulos bloqueados c/ upgrade | ✅ Documentado |
+| 28/07 | Domínio automático via Vercel wildcard (*.vendas.michelribeiro.com.br) | ✅ Decidido |
+| 29/07 | Admin de Clientes — CRUD completo (cadastro, plano, status) | ✅ No ar |
+| 29/07 | Login do Cliente — /login + sessão 30 dias | ✅ No ar |
+| 29/07 | Template do cliente — /app/dashboard + layout protegido | ✅ No ar |
 
 ---
 
@@ -130,10 +139,14 @@
 
 | # | Task | Status |
 |---|------|--------|
-| 001 | Definir Nicho + Oferta | 🟡 Pausada |
+| 001 | ~~Definir Nicho + Oferta~~ | ❌ Cancelada (produto geral) |
 | 002 | Evolução do Robô | 🔴 Ativa |
 | 003 | Planos e Precificação | ✅ Concluída |
+| 004 | Admin de Clientes | ✅ Concluída |
+| 005 | Login do Cliente | ✅ Concluída |
 | — | Página do Cliente | ⏳ Próximo passo |
+| — | Regras de Negócio | ✅ Documentado |
+| — | Checklist geral do produto | ✅ Criado |
 
 ---
 
@@ -144,7 +157,8 @@
 | `docs/analise-estrategica.md` | Análise da sugestão do ChatGPT |
 | `docs/arquitetura-projeto.md` | DDD, estrutura de pastas, ADRs |
 | `docs/design-system.md` | Storybook, tokens, padrão de componentes |
-| `docs/especificacao-produto.md` | Especificação completa do produto |
+| `docs/especificacao-produto.md` | Especificação completa do produto + Regras de Negócio |
 | `docs/variaveis-ambiente.md` | Lista de env vars |
 | `docs/arquitetura-cliente.md` | ⬅️ Próxima fase: página do cliente |
 | `tasks/board.md` | Visão geral de todas as tasks |
+`tasks/checklist.md` | Checklist detalhado do produto inteiro |

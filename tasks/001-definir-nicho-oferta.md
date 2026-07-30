@@ -1,6 +1,6 @@
 # Task 001 — Definir Nicho + Oferta Específica
 
-**Status:** `em_andamento`  
+**Status:** `cancelada`  
 **Prioridade:** `alta`  
 **Criada em:** 26/07/2025  
 **Última atualização:** 26/07/2025  

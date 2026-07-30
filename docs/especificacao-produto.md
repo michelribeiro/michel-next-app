@@ -1,7 +1,7 @@
 # Especificação do Produto — Robô Vendedor com IA
 
-> **Status:** Rascunho inicial  
-> **Última atualização:** 26/07/2025
+> **Status:** Em desenvolvimento  
+> **Última atualização:** 28/07/2025
 
 ---
 
@@ -161,7 +161,225 @@ São contextos diferentes, treinamentos diferentes, mas o motor é o mesmo (Deep
 
 ---
 
-## 8. Próximos passos
+## 8. Regras de Negócio
+
+> Regras que definem o comportamento do sistema completo (produto final).
+
+---
+
+### 8.1 Gestão de Clientes
+
+- **Admin pode:** cadastrar, editar, suspender, reativar e excluir clientes
+- Cada cliente tem: plano contratado, status (`ativo` | `inadimplente` | `cancelado`), data de início, data de vencimento
+- Cliente tem **painel próprio** com acesso restrito por login
+- Ao cadastrar um cliente, o sistema deve permitir vincular manualmente o plano e os módulos liberados
+
+---
+
+### 8.2 Provisionamento (criação da conta)
+
+**Regra final (automática) — fluxo completo:**
+
+```
+1. Cliente compra e paga via ASAAS (cartão/PIX)
+2. ASAAS confirma pagamento → envia webhook para o sistema
+3. Sistema cria:
+   - Conta do cliente (login: e-mail, senha: temporária)
+   - Página pública no subdomínio: cliente.vendas.michelribeiro.com.br
+   - Registro no banco: plano, módulos liberados, status "ativo"
+4. Sistema dispara e-mail:
+   ┌────────────────────────────────────────────┐
+   │ Assunto: Seu Robô Vendedor está pronto! 🚀 │
+   │                                             │
+   │ Olá [Nome],                               │
+   │                                             │
+   │ Sua página já está no ar!                  │
+   │ 📍 joao.vendas.michelribeiro.com.br       │
+   │                                             │
+   │ Acesse seu painel para configurar:         │
+   │ 🔗 app.michelribeiro.com.br/login         │
+   │ Login: [e-mail]                            │
+   │ Senha: [temporária]                        │
+   │                                             │
+   │ ⚠️ Recomendamos trocar a senha no         │
+   │    primeiro acesso.                         │
+   └────────────────────────────────────────────┘
+5. Cliente acessa, troca senha, cadastra produtos
+6. Pronto! Página dele já está no ar com IA
+```
+
+**Boleto:** criar a conta, mas liberar acesso total **após confirmação de pagamento**.
+
+**Regra transitória (enquanto não tem ASAAS integrado):**
+- Admin cria cliente manualmente no painel
+- Admin libera acesso manualmente
+- Sistema gera e-mail com login automático
+
+---
+
+### 8.3 Pagamentos — Visibilidade Única
+
+> O ASAAS é o processador, mas ninguém precisa acessá-lo.
+
+**Cliente vê no painel dele:**
+- Status da assinatura (ativa/inadimplente/cancelada)
+- Próximo vencimento
+- Histórico de pagamentos (data, valor, forma de pagamento)
+- Opção de emitir 2ª via do boleto (se aplicável)
+- **Não vê**: valor que Michel recebe, taxas, comissões
+
+**Michel vê no admin:**
+- Receita recorrente (MRR)
+- Clientes ativos, inadimplentes, cancelados
+- Histórico completo de cada cliente
+- Próximos vencimentos
+- Total de cancelamentos (churn)
+- **Tudo centralizado**, sem sair do sistema
+
+---
+
+### 8.4 Comissões para Parceiros / Afiliados
+
+> Para permitir que agências e parceiros vendam o sistema e ganhem comissão.
+
+**Cadastro de parceiros (no admin do Michel):**
+- Nome, WhatsApp, e-mail, chave PIX
+- Percentual de comissão (pode ser global ou por parceiro)
+- Link de afiliado único (ex: `michelribeiro.com.br/?ref=parceiro`)
+
+**Regras de comissão:**
+- Parceiro ganha **X% enquanto o cliente pagar** (recorrência)
+- Sugestão: 50% da 1ª mensalidade + 10% recorrente, ou só 15% recorrente
+- Comissão calculada automaticamente quando o pagamento é confirmado
+
+**Relatório de comissões (no admin do Michel):**
+- Comissões a pagar (valor, parceiro, cliente, data, status)
+- Status: `pendente` | `pago`
+- Admin marca como pago quando transferir via PIX
+- Total gerado por parceiro (mês, acumulado)
+
+---
+
+### 8.5 Gateway de Pagamento
+
+- **Único gateway:** ASAAS (cartão, boleto, PIX)
+- ASAAS roda **invisível** — ninguém além do sistema se conecta a ele
+- Webhook da ASAAS → sistema atualiza status de pagamento automaticamente
+- Repasse automático para a **conta bancária do Michel** (configurado na ASAAS, não no sistema)
+- Se o cartão for recusado, ASAAS notifica → sistema marca como inadimplente → sistema notifica cliente por e-mail
+
+---
+
+### 8.6 Painel do Cliente (visão geral)
+
+> O que o cliente vê ao logar.
+
+#### Navegação inteligente (por plano)
+
+Cada menu aparece ou fica oculto conforme o plano contratado:
+
+| Menu | Básico | Evolution | Pro |
+|------|:------:|:---------:|:---:|
+| Dashboard | ❌ oculto | ✅ visível | ✅ visível |
+| Produtos | ✅ | ✅ | ✅ |
+| Leads | ✅ | ✅ | ✅ |
+| WhatsApp | ❌ oculto | ✅ | ✅ |
+| Grupos | ❌ oculto | ✅ | ✅ |
+| Instagram | ❌ oculto | ❌ oculto | ✅ |
+| Configurações | ✅ | ✅ | ✅ |
+| Pagamentos | ✅ | ✅ | ✅ |
+
+#### Seções do painel
+
+| Seção | Conteúdo |
+|-------|----------|
+| Dashboard | Leads recebidos (total, hoje, esse mês), status do plano |
+| Produtos | CRUD completo (cadastrar, editar, listar, excluir) |
+| Leads | Clientes que interagiram com a página dele |
+| Minha página | Visualizar como os clientes dele veem |
+| Pagamentos | Status da assinatura, histórico, 2ª via de boleto |
+| Configurações | Logo, cores, tom da IA, dados do negócio |
+
+#### Módulos bloqueados com call-to-action
+
+Na página inicial do painel, o cliente vê uma **visão geral dos módulos**:
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Seus Módulos                                       │
+│                                                     │
+│  🔓 Página + IA                     ✅ Ativo       │
+│  🔓 Captura de leads                ✅ Ativo       │
+│  🔓 Checkout ASAAS                  ✅ Ativo       │
+│  🔒 WhatsApp 1:1          🔜 Fazer Upgrade R$97    │
+│  🔒 Dashboard             🔜 Fazer Upgrade R$97    │
+│  🔒 Instagram             🔜 Fazer Upgrade R$197   │
+│  🔒 Domínio próprio       🔜 Fazer Upgrade R$197   │
+└─────────────────────────────────────────────────────┘
+```
+
+Isso serve como **vitrine de upgrade** — o cliente vê o que está perdendo
+
+---
+
+### 8.7 Módulos por Plano (plug-and-play)
+
+| Módulo | Básico (R$49) | Evolution (R$97) | Pro (R$197) |
+|--------|:-------------:|:----------------:|:-----------:|
+| Página pública + IA | ✅ | ✅ | ✅ |
+| Captura de leads | ✅ | ✅ | ✅ |
+| Até 30 produtos | ✅ (limite) | ✅ (ilimitado) | ✅ (ilimitado) |
+| Checkout ASAAS | ✅ | ✅ | ✅ |
+| WhatsApp 1:1 | ❌ | ✅ | ✅ |
+| Disparo em grupo | ❌ | ✅ (até 3 grupos) | ✅ (até 10 grupos) |
+| Dashboard | ❌ | ✅ | ✅ |
+| Instagram | ❌ | ❌ | ✅ |
+| Domínio próprio | ❌ | ❌ | ✅ |
+
+---
+
+### 8.8 Domínio e Subdomínio (100% automático)
+
+#### Setup único (uma vez na vida)
+
+```
+1. No DNS de michelribeiro.com.br:
+   - Registrar: vendas.michelribeiro.com.br
+   - Apontar CNAME ou A para a Vercel
+
+2. Na Vercel:
+   - Adicionar domínio wildcard: *.vendas.michelribeiro.com.br
+
+3. ✅ Setup completo — não precisa fazer nada por cliente
+```
+
+#### Como funciona para cada cliente
+
+```
+Novo cliente "João Padaria" compra o plano
+    ↓
+Sistema gera: joao-padaria.vendas.michelribeiro.com.br
+    ↓
+Vercel já resolve qualquer *.vendas.... automaticamente
+    ↓
+Next.js detecta o subdomínio "joao-padaria"
+    ↓
+Busca no banco os dados do cliente João
+    ↓
+Renderiza a página personalizada dele com produtos + IA
+```
+
+**Zero trabalho manual por cliente.** Um novo cliente = apenas um registro no banco.
+
+#### Domínio próprio (plano Pro)
+
+- O cliente pode usar o próprio domínio (ex: `joao.meunegocio.com.br`)
+- Na V1: **configuração manual** (cliente solicita, Michel configura DNS uma vez)
+- Futuro: automatizar via API da Vercel para o cliente fazer sozinho
+
+---
+
+## 9. Próximos passos
 
 - [ ] Aprovar estrutura
 - [ ] Definir cores / identidade visual

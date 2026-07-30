@@ -286,11 +286,13 @@ function CreateClientModal({
   open,
   onClose,
   onCreated,
+  onSuccess,
   token,
 }: {
   open: boolean;
   onClose: () => void;
   onCreated: () => void;
+  onSuccess: (name: string, password: string) => void;
   token: string;
 }) {
   const [name, setName] = useState("");
@@ -299,7 +301,6 @@ function CreateClientModal({
   const [plan, setPlan] = useState<PlanType>(PlanType.BASIC);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-  const [createdInfo, setCreatedInfo] = useState<{ name: string; email: string; password: string } | null>(null);
   const [freeUntil, setFreeUntil] = useState("");
 
   if (!open) return null;
@@ -330,12 +331,8 @@ function CreateClientModal({
       }
 
       const data = await res.json();
-
-      setCreatedInfo({
-        name: data.name,
-        email: data.email,
-        password: data.temp_password,
-      });
+      const clientName = data.name;
+      const tempPass = data.temp_password;
 
       setName("");
       setEmail("");
@@ -343,6 +340,8 @@ function CreateClientModal({
       setFreeUntil("");
       setPlan(PlanType.BASIC);
       onCreated();
+      onSuccess(clientName, tempPass);
+      onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro desconhecido");
       setTimeout(() => setError(""), 6000);
@@ -449,47 +448,6 @@ function CreateClientModal({
           </div>
         </form>
       </div>
-
-      {/* Success with password */}
-      {createdInfo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="w-full max-w-md rounded-2xl border border-green-500/20 bg-zinc-900 p-6">
-            <div className="mb-4 text-center">
-              <div className="mb-3 text-4xl">✅</div>
-              <h2 className="text-lg font-bold text-white">
-                Cliente cadastrado!
-              </h2>
-              <p className="mt-1 text-sm text-zinc-400">
-                {createdInfo.name} — {createdInfo.email}
-              </p>
-            </div>
-
-            <div className="mb-4 rounded-xl border border-violet-500/20 bg-violet-500/5 p-4">
-              <p className="mb-2 text-xs font-medium text-violet-400">
-                🔑 Senha temporária
-              </p>
-              <p className="select-all rounded-lg bg-zinc-800 px-3 py-2 font-mono text-lg font-bold text-white">
-                {createdInfo.password}
-              </p>
-            </div>
-
-            <p className="mb-4 text-xs text-zinc-500">
-              O cliente deve acessar <span className="text-violet-400">/{'login'}</span> com e-mail e esta senha.
-              Recomende trocar a senha no primeiro acesso.
-            </p>
-
-            <button
-              onClick={() => {
-                setCreatedInfo(null);
-                onClose();
-              }}
-              className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 py-3 text-sm font-medium text-white transition-all"
-            >
-              Fechar
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -505,6 +463,12 @@ function ClientsTab({
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [successToast, setSuccessToast] = useState<{ name: string; password: string } | null>(null);
+
+  const showSuccess = (name: string, password: string) => {
+    setSuccessToast({ name, password });
+    setTimeout(() => setSuccessToast(null), 8000);
+  };
 
   const fetchClients = useCallback(async () => {
     setLoading(true);
@@ -694,10 +658,34 @@ function ClientsTab({
         </div>
       )}
 
+      {/* Success toast */}
+      {successToast && (
+        <div className="fixed bottom-6 right-6 z-50 max-w-sm animate-in slide-in-from-right rounded-2xl border border-green-500/20 bg-zinc-900 p-4 shadow-2xl">
+          <div className="mb-2 flex items-center gap-2">
+            <span className="text-lg">✅</span>
+            <span className="font-medium text-white">Cliente cadastrado!</span>
+          </div>
+          <p className="mb-2 text-sm text-zinc-400">{successToast.name}</p>
+          <div className="rounded-xl border border-violet-500/20 bg-violet-500/5 p-3">
+            <p className="mb-1 text-xs text-violet-400">🔑 Senha temporária</p>
+            <p className="select-all font-mono text-base font-bold text-white">
+              {successToast.password}
+            </p>
+          </div>
+          <button
+            onClick={() => setSuccessToast(null)}
+            className="mt-2 text-xs text-zinc-500 hover:text-zinc-300"
+          >
+            Dispensar
+          </button>
+        </div>
+      )}
+
       <CreateClientModal
         open={showCreate}
         onClose={() => setShowCreate(false)}
         onCreated={fetchClients}
+        onSuccess={(name, password) => showSuccess(name, password)}
         token={token}
       />
     </>

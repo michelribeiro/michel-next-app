@@ -8,6 +8,7 @@ export interface Client {
   whatsapp: string;
   plan: PlanType;
   status: ClientStatus;
+  free_until: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -17,6 +18,7 @@ export interface CreateClientInput {
   email: string;
   whatsapp: string;
   plan: PlanType;
+  free_until?: string | null;
 }
 
 export interface UpdateClientInput {
@@ -25,4 +27,5 @@ export interface UpdateClientInput {
   whatsapp?: string;
   plan?: PlanType;
   status?: ClientStatus;
+  free_until?: string | null;
 }

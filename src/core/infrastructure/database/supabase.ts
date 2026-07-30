@@ -103,6 +103,7 @@ export async function createClientRecord(input: CreateClientInput) {
         whatsapp: input.whatsapp,
         plan: input.plan,
         status: "active",
+        free_until: input.free_until || null,
       },
     ])
     .select()
@@ -124,6 +125,7 @@ export async function updateClient(
     whatsapp?: string;
     plan?: string;
     status?: ClientStatus;
+    free_until?: string | null;
   }
 ) {
   const { data, error } = await supabase

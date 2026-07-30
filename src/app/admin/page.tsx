@@ -22,6 +22,7 @@ interface Client {
   whatsapp: string;
   plan: PlanType;
   status: "active" | "suspended" | "canceled";
+  free_until: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -44,12 +45,14 @@ const CLIENT_STATUS_CONFIG = {
 } as const;
 
 const PLAN_LABELS: Record<PlanType, string> = {
+  free: "Free",
   basic: "Básico",
   evolution: "Evolution",
   pro: "Pro",
 };
 
 const PLAN_COLORS: Record<PlanType, string> = {
+  free: "bg-green-500/10 text-green-400 border-green-500/20",
   basic: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
   evolution: "bg-violet-500/10 text-violet-400 border-violet-500/20",
   pro: "bg-blue-500/10 text-blue-400 border-blue-500/20",
@@ -297,6 +300,7 @@ function CreateClientModal({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [createdInfo, setCreatedInfo] = useState<{ name: string; email: string; password: string } | null>(null);
+  const [freeUntil, setFreeUntil] = useState("");
 
   if (!open) return null;
 
@@ -305,6 +309,11 @@ function CreateClientModal({
     setSaving(true);
     setError("");
 
+    const body: Record<string, unknown> = { name, email, whatsapp, plan };
+    if (plan === PlanType.FREE && freeUntil) {
+      body.free_until = freeUntil;
+    }
+
     try {
       const res = await fetch("/api/admin/clients", {
         method: "POST",
@@ -312,7 +321,7 @@ function CreateClientModal({
           "Content-Type": "application/json",
           authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ name, email, whatsapp, plan }),
+        body: JSON.stringify(body),
       });
 
       if (!res.ok) {
@@ -386,14 +395,33 @@ function CreateClientModal({
             <label className="mb-1 block text-xs text-zinc-500">Plano</label>
             <select
               value={plan}
-              onChange={(e) => setPlan(e.target.value as PlanType)}
+              onChange={(e) => {
+                setPlan(e.target.value as PlanType);
+                if (e.target.value !== PlanType.FREE) setFreeUntil("");
+              }}
               className="w-full rounded-xl border border-white/10 bg-zinc-800 px-4 py-3 text-sm text-white outline-none focus:border-violet-500"
             >
+              <option value={PlanType.FREE}>Free — Grátis</option>
               <option value={PlanType.BASIC}>Básico — R$49</option>
               <option value={PlanType.EVOLUTION}>Evolution — R$97</option>
               <option value={PlanType.PRO}>Pro — R$197</option>
             </select>
           </div>
+
+          {plan === PlanType.FREE && (
+            <div>
+              <label className="mb-1 block text-xs text-zinc-500">
+                Expira em (data)
+              </label>
+              <input
+                type="date"
+                value={freeUntil}
+                onChange={(e) => setFreeUntil(e.target.value)}
+                className="w-full rounded-xl border border-white/10 bg-zinc-800 px-4 py-3 text-sm text-white outline-none focus:border-violet-500"
+                required
+              />
+            </div>
+          )}
 
           {error && <p className="text-sm text-red-400">{error}</p>}
 
@@ -580,6 +608,7 @@ function ClientsTab({
                 <th className="px-4 py-3 font-medium text-zinc-400">WhatsApp</th>
                 <th className="px-4 py-3 font-medium text-zinc-400">Plano</th>
                 <th className="px-4 py-3 font-medium text-zinc-400">Status</th>
+                <th className="px-4 py-3 font-medium text-zinc-400">Expira</th>
                 <th className="px-4 py-3 font-medium text-zinc-400">Desde</th>
                 <th className="px-4 py-3 font-medium text-zinc-400">Ações</th>
               </tr>
@@ -612,6 +641,7 @@ function ClientsTab({
                         PLAN_COLORS[client.plan]
                       }`}
                     >
+                      <option value={PlanType.FREE}>Free</option>
                       <option value={PlanType.BASIC}>Básico</option>
                       <option value={PlanType.EVOLUTION}>Evolution</option>
                       <option value={PlanType.PRO}>Pro</option>
@@ -634,6 +664,11 @@ function ClientsTab({
                       <option value="suspended">Suspenso</option>
                       <option value="canceled">Cancelado</option>
                     </select>
+                  </td>
+                  <td className="px-4 py-3 text-zinc-400">
+                    {client.free_until
+                      ? new Date(client.free_until).toLocaleDateString("pt-BR")
+                      : "-"}
                   </td>
                   <td className="px-4 py-3 text-zinc-400">
                     {formatDate(client.created_at)}

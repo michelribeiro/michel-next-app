@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { name, email, whatsapp, plan } = body;
+    const { name, email, whatsapp, plan, free_until } = body;
 
     if (!name || !email || !whatsapp || !plan) {
       return NextResponse.json(
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const validPlans = ["basic", "evolution", "pro"];
+    const validPlans = ["free", "basic", "evolution", "pro"];
     if (!validPlans.includes(plan)) {
       return NextResponse.json(
         { error: `Plano inválido. Use: ${validPlans.join(", ")}` },
@@ -76,7 +76,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const client = await createClientRecord({ name, email, whatsapp, plan });
+    // free_until é obrigatório para plano free
+    if (plan === "free" && !free_until) {
+      return NextResponse.json(
+        { error: "Plano Free requer uma data de expiração (free_until)" },
+        { status: 400 }
+      );
+    }
+
+    const client = await createClientRecord({ name, email, whatsapp, plan, free_until: free_until || null });
 
     // Create client user with temporary password
     const tempPassword = generateTempPassword();
@@ -133,7 +141,7 @@ export async function PATCH(request: NextRequest) {
 
     // Validate plan if provided
     if (updates.plan) {
-      const validPlans = ["basic", "evolution", "pro"];
+      const validPlans = ["free", "basic", "evolution", "pro"];
       if (!validPlans.includes(updates.plan)) {
         return NextResponse.json(
           { error: `Plano inválido. Use: ${validPlans.join(", ")}` },

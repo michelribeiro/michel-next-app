@@ -340,10 +340,12 @@ function CreateClientModal({
       setName("");
       setEmail("");
       setWhatsapp("");
+      setFreeUntil("");
       setPlan(PlanType.BASIC);
       onCreated();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro desconhecido");
+      setTimeout(() => setError(""), 6000);
     } finally {
       setSaving(false);
     }
@@ -423,7 +425,11 @@ function CreateClientModal({
             </div>
           )}
 
-          {error && <p className="text-sm text-red-400">{error}</p>}
+          {error && (
+            <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+              {error}
+            </div>
+          )}
 
           <div className="flex gap-3 pt-2">
             <button

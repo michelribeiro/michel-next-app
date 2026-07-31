@@ -1,7 +1,7 @@
 # Memória do Projeto — Michel Next App
 
 > **Propósito:** Manter contexto contínuo entre sessões e decisões.  
-> **Última atualização:** 29/07/2025
+> **Última atualização:** 30/07/2025 (sessão completa)
 
 ---
 
@@ -89,6 +89,18 @@
 | 29/07 | Admin de Clientes — CRUD completo (cadastro, plano, status) | ✅ No ar |
 | 29/07 | Login do Cliente — /login + sessão 30 dias | ✅ No ar |
 | 29/07 | Template do cliente — /app/dashboard + layout protegido | ✅ No ar |
+| 30/07 | CRUD de Produtos (imagens, rich text, moeda, crop) | ✅ No ar |
+| 30/07 | Painel do Cliente (Dashboard, Config, Relatórios, Leads, Pedidos) | ✅ No ar |
+| 30/07 | Página Pública SEO com dados reais | ✅ No ar |
+| 30/07 | Carrinho + Checkout + Endereço + Cartão + PIX | ✅ No ar |
+| 30/07 | ASAAS integrado (sandbox, webhook, repasse PIX automático) | ✅ No ar |
+| 30/07 | Leads (tabela, filtros, CSV, ícones, excluir) | ✅ No ar |
+| 30/07 | Pedidos (colapsável, confirmação, detalhes) | ✅ No ar |
+| 30/07 | Relatórios (Recharts, gráficos, comparativo) | ✅ No ar |
+| 30/07 | Configurações (logo, PIX, taxas, Pixel, absorb_fees) | ✅ No ar |
+| 30/07 | Autenticação (AuthContext, login, sessão) | ✅ No ar |
+| 30/07 | ⏳ Pendente: Domínio próprio + e-mail do sistema | 🔧 Setup futuro |
+| 30/07 | ⏳ Pendente: WhatsApp Evolution API | 📅 Futuro |
 
 ---
 

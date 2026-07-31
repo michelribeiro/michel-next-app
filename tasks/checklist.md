@@ -64,9 +64,10 @@
 - [ ] **Redefinição de senha** — 
 
 ### Painel do Cliente
-- [ ] **Dashboard** — Leads recebidos, status do plano
-- [ ] **CRUD de produtos** — Cadastrar, editar, listar, excluir
-- [ ] **Upload de imagens** — Cloudinary (foto do produto)
+- [x] **Painel de controle** — Navegação entre módulos (padrão de todos os planos)
+- [x] **Layout protegido** — Menu com navegação
+- [ ] **CRUD de produtos** — Cadastrar, editar, listar, excluir 🔜
+- [ ] **Upload de imagens** — Cloudinary (foto do produto) 🔜
 - [ ] **Leads recebidos** — Quem interagiu com a página dele
 - [ ] **Visualizar página pública** — Preview
 - [ ] **Pagamentos** — Status, histórico, 2ª via de boleto
@@ -105,7 +106,7 @@
 
 ---
 
-## 📊 Dashboard / Relatórios
+## 📊 Relatórios (Analytics)
 
 - [ ] **Gráfico de leads** — Por dia/semana/mês
 - [ ] **Taxa de conversão** — Leads → clientes

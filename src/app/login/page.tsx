@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AuthProvider, useAuth } from "@/core/infrastructure/auth-context";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,36 +17,19 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Erro ao fazer login");
-      }
-
-      // Save session token
-      sessionStorage.setItem("client_token", data.token);
-      sessionStorage.setItem("client_name", data.client.name);
-      sessionStorage.setItem("client_plan", data.client.plan);
-
-      router.push("/app/dashboard");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro desconhecido");
-    } finally {
+    const result = await login(email.trim(), password);
+    if (result.error) {
+      setError(result.error);
       setLoading(false);
+      return;
     }
+
+    router.push("/app/dashboard");
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] p-6">
       <div className="w-full max-w-sm">
-        {/* Logo / Brand */}
         <div className="mb-8 text-center">
           <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-blue-600 text-2xl">
             🤖
@@ -104,5 +89,13 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <AuthProvider>
+      <LoginForm />
+    </AuthProvider>
   );
 }

@@ -35,7 +35,7 @@ const benefits = [
     ),
   },
   {
-    title: "Dashboard completo",
+    title: "Relatórios completos",
     description: "Gráficos de leads, vendas e conversão. Você vê exatamente onde está ganhando dinheiro.",
     bg: "rgba(16, 185, 129, 0.094)",
     color: "rgb(16, 185, 129)",

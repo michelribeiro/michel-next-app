@@ -1,5 +1,6 @@
 import { ClientStatus } from "../value-objects/ClientStatus";
 import { PlanType } from "../../plan/value-objects/PlanType";
+import { ClientFeatures } from "../value-objects/ClientFeatures";
 
 export interface Client {
   id: number;
@@ -9,6 +10,7 @@ export interface Client {
   plan: PlanType;
   status: ClientStatus;
   free_until: string | null;
+  features: ClientFeatures | null;
   created_at: string;
   updated_at: string;
 }
@@ -19,6 +21,7 @@ export interface CreateClientInput {
   whatsapp: string;
   plan: PlanType;
   free_until?: string | null;
+  features?: ClientFeatures | null;
 }
 
 export interface UpdateClientInput {
@@ -28,4 +31,5 @@ export interface UpdateClientInput {
   plan?: PlanType;
   status?: ClientStatus;
   free_until?: string | null;
+  features?: ClientFeatures | null;
 }

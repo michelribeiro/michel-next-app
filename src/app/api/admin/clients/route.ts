@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { name, email, whatsapp, plan, free_until } = body;
+    const { name, email, whatsapp, plan, free_until, features } = body;
 
     if (!name || !email || !whatsapp || !plan) {
       return NextResponse.json(
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const client = await createClientRecord({ name, email, whatsapp, plan, free_until: free_until || null });
+    const client = await createClientRecord({ name, email, whatsapp, plan, free_until: free_until || null, features: features || null });
 
     // Create client user with temporary password
     const tempPassword = generateTempPassword();

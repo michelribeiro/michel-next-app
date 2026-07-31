@@ -53,9 +53,9 @@ function PlanCard({ plan, onSelect }: { plan: Plan; onSelect: (plan: Plan) => vo
       limitValue: plan.limits.maxProducts !== "unlimited" ? `até ${plan.limits.maxProducts}` : undefined,
     },
     {
-      id: FeatureId.DASHBOARD,
-      label: "Dashboard",
-      included: plan.limits.hasDashboard,
+      id: FeatureId.ANALYTICS,
+      label: "Relatórios",
+      included: plan.limits.hasAnalytics,
     },
     {
       id: FeatureId.WHATSAPP_1TO1,

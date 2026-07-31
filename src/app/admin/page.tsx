@@ -2,6 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { PlanType } from "@/core/domain/plan/value-objects/PlanType";
+import { getDefaultFeatures, FEATURE_LABELS, ClientFeatures } from "@/core/domain/client/value-objects/ClientFeatures";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 // ─── Types ────────────────────────────────────────────────
 
@@ -23,6 +26,7 @@ interface Client {
   plan: PlanType;
   status: "active" | "suspended" | "canceled";
   free_until: string | null;
+  features: ClientFeatures | null;
   created_at: string;
   updated_at: string;
 }
@@ -59,6 +63,14 @@ const PLAN_COLORS: Record<PlanType, string> = {
 };
 
 // ─── Helpers ──────────────────────────────────────────────
+
+function maskWhatsApp(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  if (digits.length <= 2) return `(${digits}`;
+  if (digits.length <= 7)
+    return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("pt-BR", {
@@ -301,7 +313,18 @@ function CreateClientModal({
   const [plan, setPlan] = useState<PlanType>(PlanType.BASIC);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-  const [freeUntil, setFreeUntil] = useState("");
+  const [freeUntil, setFreeUntil] = useState<Date | null>(null);
+
+  // Features customizáveis (Free)
+  const [freeFeatures, setFreeFeatures] = useState({
+    has_whatsapp: false,
+    has_dashboard: false,
+    has_instagram: false,
+    has_custom_domain: false,
+    has_checkout: false,
+    max_products: 5,
+    max_groups: 0,
+  });
 
   if (!open) return null;
 
@@ -312,7 +335,8 @@ function CreateClientModal({
 
     const body: Record<string, unknown> = { name, email, whatsapp, plan };
     if (plan === PlanType.FREE && freeUntil) {
-      body.free_until = freeUntil;
+      body.free_until = freeUntil.toISOString();
+      body.features = freeFeatures;
     }
 
     try {
@@ -337,7 +361,7 @@ function CreateClientModal({
       setName("");
       setEmail("");
       setWhatsapp("");
-      setFreeUntil("");
+      setFreeUntil(null);
       setPlan(PlanType.BASIC);
       onCreated();
       onSuccess(clientName, tempPass);
@@ -385,7 +409,7 @@ function CreateClientModal({
             <input
               type="text"
               value={whatsapp}
-              onChange={(e) => setWhatsapp(e.target.value)}
+              onChange={(e) => setWhatsapp(maskWhatsApp(e.target.value))}
               className="w-full rounded-xl border border-white/10 bg-zinc-800 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none focus:border-violet-500"
               placeholder="(11) 99999-9999"
               required
@@ -398,7 +422,7 @@ function CreateClientModal({
               value={plan}
               onChange={(e) => {
                 setPlan(e.target.value as PlanType);
-                if (e.target.value !== PlanType.FREE) setFreeUntil("");
+                if (e.target.value !== PlanType.FREE) setFreeUntil(null);
               }}
               className="w-full rounded-xl border border-white/10 bg-zinc-800 px-4 py-3 text-sm text-white outline-none focus:border-violet-500"
             >
@@ -410,18 +434,96 @@ function CreateClientModal({
           </div>
 
           {plan === PlanType.FREE && (
-            <div>
-              <label className="mb-1 block text-xs text-zinc-500">
-                Expira em (data)
-              </label>
-              <input
-                type="date"
-                value={freeUntil}
-                onChange={(e) => setFreeUntil(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-zinc-800 px-4 py-3 text-sm text-white outline-none focus:border-violet-500"
-                required
-              />
-            </div>
+            <>
+              <div>
+                <label className="mb-1 block text-xs text-zinc-500">
+                  Expira em
+                </label>
+                <DatePicker
+                  selected={freeUntil}
+                  onChange={(date: Date | null) => setFreeUntil(date)}
+                  dateFormat="dd/MM/yyyy"
+                  minDate={new Date()}
+                  placeholderText="Selecione a data"
+                  className="w-full rounded-xl border border-white/10 bg-zinc-800 px-4 py-3 text-sm text-white outline-none focus:border-violet-500"
+                  wrapperClassName="w-full"
+                  popperClassName="z-50"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-xs font-medium text-zinc-500">
+                  🛠️ Funcionalidades liberadas
+                </label>
+                <div className="space-y-2 rounded-xl border border-white/10 bg-zinc-800/50 p-3">
+                  {/* Products */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-zinc-400">Limite de produtos</span>
+                    <input
+                      type="number"
+                      min={1}
+                      max={9999}
+                      value={freeFeatures.max_products}
+                      onChange={(e) =>
+                        setFreeFeatures({ ...freeFeatures, max_products: Number(e.target.value) })
+                      }
+                      className="w-20 rounded-lg border border-white/10 bg-zinc-800 px-2 py-1 text-center text-sm text-white outline-none focus:border-violet-500"
+                    />
+                  </div>
+
+                  {/* Groups */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-zinc-400">Grupos de disparo</span>
+                    <input
+                      type="number"
+                      min={0}
+                      max={100}
+                      value={freeFeatures.max_groups}
+                      onChange={(e) =>
+                        setFreeFeatures({ ...freeFeatures, max_groups: Number(e.target.value) })
+                      }
+                      className="w-20 rounded-lg border border-white/10 bg-zinc-800 px-2 py-1 text-center text-sm text-white outline-none focus:border-violet-500"
+                    />
+                  </div>
+
+                  {/* Toggles */}
+                  {[
+                    { key: "has_whatsapp", label: "WhatsApp 1:1" },
+                    { key: "has_dashboard", label: "Relatórios (gráficos)" },
+                    { key: "has_checkout", label: "Checkout ASAAS" },
+                    { key: "has_instagram", label: "Instagram" },
+                    { key: "has_custom_domain", label: "Domínio próprio" },
+                  ].map(({ key, label }) => (
+                    <div key={key} className="flex items-center justify-between">
+                      <span className="text-sm text-zinc-400">{label}</span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setFreeFeatures({
+                            ...freeFeatures,
+                            [key]: !freeFeatures[key as keyof typeof freeFeatures],
+                          })
+                        }
+                        className={`relative h-6 w-11 rounded-full transition-colors ${
+                          freeFeatures[key as keyof typeof freeFeatures]
+                            ? "bg-violet-600"
+                            : "bg-zinc-700"
+                        }`}
+                      >
+                        <span
+                          className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
+                            freeFeatures[key as keyof typeof freeFeatures]
+                              ? "translate-x-5"
+                              : "translate-x-0"
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
           )}
 
           {error && (
@@ -462,8 +564,9 @@ function ClientsTab({
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const [successToast, setSuccessToast] = useState<{ name: string; password: string } | null>(null);
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
 
   const showSuccess = (name: string, password: string) => {
     setSuccessToast({ name, password });
@@ -546,6 +649,26 @@ function ClientsTab({
     }
   };
 
+  const handleDeleteClient = async (id: number) => {
+    setConfirmDeleteId(null);
+    try {
+      const res = await fetch(`/api/admin/clients?id=${id}`, {
+        method: "DELETE",
+        headers: { authorization: `Bearer ${token}` },
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        onError(data.error || "Erro ao excluir");
+        return;
+      }
+
+      setClients((prev) => prev.filter((c) => c.id !== id));
+    } catch (err) {
+      onError(err instanceof Error ? err.message : "Erro ao excluir");
+    }
+  };
+
   if (loading) {
     return <div className="py-20 text-center text-zinc-500">Carregando clientes...</div>;
   }
@@ -569,38 +692,27 @@ function ClientsTab({
           Nenhum cliente cadastrado ainda.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-white/5">
+        <div
+          className="overflow-x-auto rounded-2xl border border-white/5"
+          onClick={() => setConfirmDeleteId(null)}
+        >
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-white/5 bg-zinc-900">
                 <th className="px-4 py-3 font-medium text-zinc-400">Nome</th>
-                <th className="px-4 py-3 font-medium text-zinc-400">E-mail</th>
-                <th className="px-4 py-3 font-medium text-zinc-400">WhatsApp</th>
                 <th className="px-4 py-3 font-medium text-zinc-400">Plano</th>
                 <th className="px-4 py-3 font-medium text-zinc-400">Status</th>
-                <th className="px-4 py-3 font-medium text-zinc-400">Expira</th>
-                <th className="px-4 py-3 font-medium text-zinc-400">Desde</th>
                 <th className="px-4 py-3 font-medium text-zinc-400">Ações</th>
               </tr>
             </thead>
             <tbody>
               {clients.map((client) => (
+                <>
                 <tr
                   key={client.id}
                   className="border-b border-white/5 transition-colors hover:bg-zinc-900/50"
                 >
                   <td className="px-4 py-3 font-medium">{client.name}</td>
-                  <td className="px-4 py-3 text-zinc-400">{client.email}</td>
-                  <td className="px-4 py-3">
-                    <a
-                      href={`https://wa.me/${client.whatsapp.replace(/\D/g, "")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-violet-400 transition-colors hover:text-violet-300"
-                    >
-                      {client.whatsapp}
-                    </a>
-                  </td>
                   <td className="px-4 py-3">
                     <select
                       value={client.plan}
@@ -635,23 +747,131 @@ function ClientsTab({
                       <option value="canceled">Cancelado</option>
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-zinc-400">
-                    {client.free_until
-                      ? new Date(client.free_until).toLocaleDateString("pt-BR")
-                      : "-"}
-                  </td>
-                  <td className="px-4 py-3 text-zinc-400">
-                    {formatDate(client.created_at)}
-                  </td>
                   <td className="px-4 py-3">
-                    <button
-                      onClick={() => setEditingId(client.id)}
-                      className="rounded-lg border border-white/10 bg-zinc-800 px-2 py-1 text-xs text-zinc-400 transition-colors hover:text-white"
-                    >
-                      Detalhes
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {confirmDeleteId === client.id ? (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteClient(client.id);
+                          }}
+                          className="rounded-lg border border-red-500/40 bg-red-500/30 px-2 py-1 text-xs font-medium text-white transition-all hover:bg-red-500/50"
+                        >
+                          Confirmar
+                        </button>
+                      ) : (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setConfirmDeleteId(client.id);
+                          }}
+                          className="rounded-lg border border-red-500/20 bg-red-500/10 px-2 py-1 text-xs text-red-400 transition-all hover:bg-red-500/30"
+                        >
+                          Excluir
+                        </button>
+                      )}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setExpandedRow(expandedRow === client.id ? null : client.id);
+                        }}
+                        className="rounded-lg border border-white/10 bg-zinc-800 px-2 py-1 text-xs text-zinc-400 transition-all hover:text-white"
+                      >
+                        {expandedRow === client.id ? "▲" : "▼"}
+                      </button>
+                    </div>
                   </td>
                 </tr>
+                {expandedRow === client.id && (
+                  <tr key={`${client.id}-expanded`} className="border-b border-white/5 bg-zinc-900/30">
+                    <td colSpan={4} className="px-6 py-4">
+                      <div className="mb-4 grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                        <div>
+                          <span className="text-zinc-500">Plano:</span>{" "}
+                          <span className="font-medium text-white">{PLAN_LABELS[client.plan]}</span>
+                        </div>
+                        <div>
+                          <span className="text-zinc-500">Status:</span>{" "}
+                          <span className="font-medium text-white">
+                            {client.status === "active"
+                              ? "Ativo"
+                              : client.status === "suspended"
+                              ? "Suspenso"
+                              : "Cancelado"}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-zinc-500">E-mail:</span>{" "}
+                          <span className="text-white">{client.email}</span>
+                        </div>
+                        <div>
+                          <span className="text-zinc-500">Cadastro:</span>{" "}
+                          <span className="text-zinc-400">{formatDate(client.created_at)}</span>
+                        </div>
+                        <div>
+                          <span className="text-zinc-500">WhatsApp:</span>{" "}
+                          <span className="text-violet-400">{client.whatsapp}</span>
+                        </div>
+                        {client.free_until ? (
+                          <div>
+                            <span className="text-zinc-500">Expira em:</span>{" "}
+                            <span className="text-amber-400">
+                              {new Date(client.free_until).toLocaleDateString("pt-BR")}
+                            </span>
+                          </div>
+                        ) : (
+                          <div />
+                        )}
+                      </div>
+
+                      <div className="border-t border-white/5 pt-3">
+                        <p className="mb-2 text-sm font-medium text-zinc-500">
+                          📦 Funcionalidades do plano
+                        </p>
+                        <div className="grid grid-cols-2 gap-x-8 gap-y-1.5">
+                          {(() => {
+                            const features = client.features || getDefaultFeatures(client.plan);
+                            const items: { key: keyof ClientFeatures; label: string }[] = [
+                              { key: "has_whatsapp", label: "WhatsApp 1:1" },
+                              { key: "has_dashboard", label: "Relatórios (gráficos)" },
+                              { key: "has_checkout", label: "Checkout ASAAS" },
+                              { key: "has_instagram", label: "Instagram" },
+                              { key: "has_custom_domain", label: "Domínio próprio" },
+                              { key: "max_products", label: "Limite de produtos" },
+                              { key: "max_groups", label: "Grupos de disparo" },
+                            ];
+                            return items.map(({ key, label }) => {
+                              const val = features[key];
+                              const isEnabled = typeof val === "boolean" ? val : (val as number) > 0;
+                              const suffix =
+                                typeof val === "number"
+                                  ? val === 999999
+                                    ? "ilimitado"
+                                    : String(val)
+                                  : null;
+                              return (
+                                <div key={key} className="flex items-center gap-2 text-sm">
+                                  {isEnabled ? (
+                                    <span className="text-green-400">✅</span>
+                                  ) : (
+                                    <span className="text-zinc-600">🔒</span>
+                                  )}
+                                  <span className={isEnabled ? "text-zinc-300" : "text-zinc-600"}>
+                                    {label}
+                                    {suffix !== null && (
+                                      <span className="ml-1 text-zinc-500">({suffix})</span>
+                                    )}
+                                  </span>
+                                </div>
+                              );
+                            });
+                          })()}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+                </>
               ))}
             </tbody>
           </table>
@@ -668,9 +888,19 @@ function ClientsTab({
           <p className="mb-2 text-sm text-zinc-400">{successToast.name}</p>
           <div className="rounded-xl border border-violet-500/20 bg-violet-500/5 p-3">
             <p className="mb-1 text-xs text-violet-400">🔑 Senha temporária</p>
-            <p className="select-all font-mono text-base font-bold text-white">
-              {successToast.password}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="flex-1 select-all font-mono text-base font-bold text-white">
+                {successToast.password}
+              </p>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(successToast.password);
+                }}
+                className="rounded-lg border border-violet-500/30 bg-violet-500/10 px-2.5 py-1 text-xs text-violet-400 transition-all hover:bg-violet-500/20"
+              >
+                Copiar
+              </button>
+            </div>
           </div>
           <button
             onClick={() => setSuccessToast(null)}

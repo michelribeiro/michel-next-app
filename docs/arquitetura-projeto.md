@@ -1,7 +1,7 @@
 # Arquitetura do Projeto — Robô Vendedor
 
 > **Status:** Planejamento  
-> **Última atualização:** 26/07/2025  
+> **Última atualização:** 30/07/2025  
 > **Stack base:** Next.js 16 + TypeScript + Tailwind CSS
 
 ---
@@ -104,23 +104,48 @@ packages/             ← Futuro, se escalar
 
 ---
 
-## 4. Fluxo de dados (exemplo: compra)
+## 4. Padrões de código adotados
+
+### 4.1 State Management — Context API
+
+Para estado global do cliente (autenticação), usamos **React Context API**.
+- Arquivo: `src/core/infrastructure/auth-context.tsx`
+- Provider envolvendo o layout protegido
+- Hook `useAuth()` disponível em qualquer página filha
+
+```tsx
+// Exemplo de uso
+const { client, token, login, logout } = useAuth();
+// client.name, client.plan, client.token
+```
+
+### 4.2 Autenticação
+
+- **Clientes:** `client_users` + `client_sessions` (tabelas Supabase)
+- **Admin:** Senha fixa via `ADMIN_PASSWORD` no `.env`
+- Sessão do cliente dura 30 dias
+- Token armazenado em `sessionStorage` + Context
+
+### 4.3 Fluxo de dados
 
 ```
-Usuário → Página (Next.js)
+Usuário → Página (Next.js Client Component)
               ↓
-         API Route (Next.js)
+         API Route (Next.js Server)
               ↓
-    Application Use Case
-              ↓
-         Domain Entity (valida regras)
-              ↓
-    Infrastructure Repository
-              ↓
-         MongoDB / ASAAS
+    Infrastructure (Supabase / Cloudinary)
               ↓
          Resposta → UI
 ```
+
+### 4.4 Separação por camadas
+
+| Camada | Onde fica | O que contém |
+|--------|-----------|-------------|
+| **Domain** | `core/domain/` | Entidades, value-objects, interfaces (sem dependências externas) |
+| **Infrastructure** | `core/infrastructure/` | Supabase, auth, e-mail, Cloudinary (trocável) |
+| **API** | `app/api/` | Next.js API Routes (ponte entre front e infra) |
+| **UI** | `app/` e `ui/components/` | Páginas e componentes React |
 
 ---
 
@@ -132,7 +157,8 @@ Usuário → Página (Next.js)
 | Runtime | Node.js (LTS) | Ambiente de execução, API Routes, libs |
 | Linguagem | TypeScript estrito | Segurança de tipo — front e back |
 | Estilos | Tailwind CSS + Design System | Velocidade + consistência |
-| Banco | MongoDB (já temos free) | Documento, flexível |
+| Ícones | lucide-react | Biblioteca de ícones padrão do projeto |
+| Banco | Supabase (PostgreSQL) | Relacional, RLS, gratuito |
 | IA | DeepSeek API (já temos) | Barato, português bom |
 | Pagamento | ASAAS (a confirmar) | Recorrência nativa |
 | Design System | Storybook (a confirmar) | Documentação de componentes |

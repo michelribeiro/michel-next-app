@@ -68,7 +68,7 @@
 | Plano | Preço | Funcionalidades |
 |-------|-------|----------------|
 | 🟢 **Básico** | **R$ 49/mês** | Página + IA + leads ilimitados + Checkout (ASAAS) + até 30 produtos |
-| 🟡 **Evolution** | **R$ 97/mês** | Tudo do Básico + WhatsApp 1:1 + Disparo em grupo (até 3) + Dashboard + produtos ilimitados |
+| 🟡 **Evolution** | **R$ 97/mês** | Tudo do Básico + WhatsApp 1:1 + Disparo em grupo (até 3) + Relatórios + produtos ilimitados |
 | 🔴 **Pro** | **R$ 197/mês** | Tudo do Evolution + Cloud API (oficial) + Instagram + 10 grupos + Domínio próprio |
 
 **Implantação (todos os planos):** R$ 197 único — configurar produtos, conectar WhatsApp, treinar IA
@@ -280,7 +280,7 @@ Cada menu aparece ou fica oculto conforme o plano contratado:
 
 | Menu | Básico | Evolution | Pro |
 |------|:------:|:---------:|:---:|
-| Dashboard | ❌ oculto | ✅ visível | ✅ visível |
+| Relatórios | ❌ oculto | ✅ visível | ✅ visível |
 | Produtos | ✅ | ✅ | ✅ |
 | Leads | ✅ | ✅ | ✅ |
 | WhatsApp | ❌ oculto | ✅ | ✅ |
@@ -293,7 +293,7 @@ Cada menu aparece ou fica oculto conforme o plano contratado:
 
 | Seção | Conteúdo |
 |-------|----------|
-| Dashboard | Leads recebidos (total, hoje, esse mês), status do plano |
+| Relatórios | Leads recebidos (total, hoje, esse mês), status do plano |
 | Produtos | CRUD completo (cadastrar, editar, listar, excluir) |
 | Leads | Clientes que interagiram com a página dele |
 | Minha página | Visualizar como os clientes dele veem |
@@ -312,7 +312,7 @@ Na página inicial do painel, o cliente vê uma **visão geral dos módulos**:
 │  🔓 Captura de leads                ✅ Ativo       │
 │  🔓 Checkout ASAAS                  ✅ Ativo       │
 │  🔒 WhatsApp 1:1          🔜 Fazer Upgrade R$97    │
-│  🔒 Dashboard             🔜 Fazer Upgrade R$97    │
+│  🔒 Relatórios            🔜 Fazer Upgrade R$97    │
 │  🔒 Instagram             🔜 Fazer Upgrade R$197   │
 │  🔒 Domínio próprio       🔜 Fazer Upgrade R$197   │
 └─────────────────────────────────────────────────────┘
@@ -331,14 +331,78 @@ Isso serve como **vitrine de upgrade** — o cliente vê o que está perdendo
 | Até 30 produtos | ✅ (limite) | ✅ (ilimitado) | ✅ (ilimitado) |
 | Checkout ASAAS | ✅ | ✅ | ✅ |
 | WhatsApp 1:1 | ❌ | ✅ | ✅ |
-| Disparo em grupo | ❌ | ✅ (até 3 grupos) | ✅ (até 10 grupos) |
-| Dashboard | ❌ | ✅ | ✅ |
+| Listas de disparo | ❌ | ✅ (até 3 listas) | ✅ (até 5 listas) |
+| Relatórios | ❌ | ✅ | ✅ |
 | Instagram | ❌ | ❌ | ✅ |
 | Domínio próprio | ❌ | ❌ | ✅ |
 
 ---
 
-### 8.8 Domínio e Subdomínio (100% automático)
+### 8.8 Central de Leads e Listas de Disparo
+
+> O cliente gerencia todos os leads em um lugar só e cria listas para disparar promoções.
+
+#### Dois tipos de lead na página pública
+
+| Tipo | Como aparece | Destino |
+|------|-------------|---------|
+| 🛒 **Quero comprar** | Botão "Comprar" / IA recomenda produto | Lead de venda |
+| 🔔 **Quero ofertas/novidades** | Botão "Receber novidades" / CTA fixo na página | Lead de newsletter |
+
+Ambos vão para a **Central de Leads** do cliente, mas com origens diferentes.
+
+#### Central de Leads (painel do cliente)
+
+```
+Central de Leads
+├── 📥 Todos os leads (unificado)
+│   ├── Origem: compra / newsletter
+│   ├── Produto de interesse (se veio de compra)
+│   └── Data, nome, WhatsApp
+├── 🔍 Filtros
+│   ├── Por data (hoje, essa semana, esse mês)
+│   ├── Por origem (compra / newsletter)
+│   └── Por produto
+└── 📋 Listas de disparo
+```
+
+#### Listas de Disparo
+
+O cliente pode:
+
+1. **Criar lista manual** — adicionar contatos um a um (nome + WhatsApp)
+2. **Criar lista por filtro** — selecionar leads existentes por origem/data/produto
+3. **Disparar mensagem** — enviar WhatsApp para todos os contatos da lista de uma vez
+
+**Exemplo de uso:**
+
+```
+1. Cliente cria lista "Promoção de Natal"
+2. Filtra: leads da newsletter dos últimos 30 dias
+3. Sistema adiciona 47 contatos na lista
+4. Cliente escreve: "🎄 Promoção de Natal! 20% off até domingo"
+5. Robô dispara no privado de cada um dos 47 contatos
+```
+
+#### Limites por plano
+
+| Recurso | Básico | Evolution | Pro |
+|--------|:------:|:---------:|:---:|
+| Listas de disparo | ❌ | até 3 | até 5 |
+| Contatos por lista | ❌ | até 500 | ilimitado |
+| Disparos por mês | ❌ | até 1.000 | ilimitado |
+
+#### Implementação futura
+
+- [ ] Tabela `lead_lists` (listas criadas pelo cliente)
+- [ ] Tabela `lead_list_items` (relação lead-lista)
+- [ ] Tag de origem no lead (`compra` / `newsletter` / `manual`)
+- [ ] Filtros na Central de Leads
+- [ ] Disparo automático via Evolution/Cloud API
+
+---
+
+### 8.9 Domínio e Subdomínio (100% automático)
 
 #### Setup único (uma vez na vida)
 
@@ -379,8 +443,260 @@ Renderiza a página personalizada dele com produtos + IA
 
 ---
 
+### 8.10 Notificações de Venda
+
+> Quando um cliente final compra ou demonstra interesse na página do cliente, o sistema notifica o dono do negócio.
+
+#### O que dispara notificação
+
+| Evento | Canais de notificação |
+|--------|----------------------|
+| 🛒 **Venda confirmada** (pagamento aprovado) | 📧 E-mail + 📲 WhatsApp (se Evolution+) + 🔔 Painel |
+| 📥 **Lead capturado** (interesse sem compra) | 📧 E-mail + 🔔 Painel |
+| 📋 **Lead de newsletter** (quero ofertas) | 🔔 Painel (disparo em massa depois) |
+
+#### Conteúdo das notificações
+
+**E-mail (todos os planos):**
+
+```
+Assunto: 🛒 Venda recebida — Camiseta Branca
+
+Olá João,
+
+Maria (21) 99999-9999 comprou:
+📦 Camiseta Branca — R$ 49,90
+💳 Pagamento: Cartão de crédito ✅
+
+Acesse seu painel para mais detalhes:
+🔗 app.michelribeiro.com.br
+```
+
+**WhatsApp 1:1 (Evolution+):**
+
+```
+🛒 VENDA RECEBIDA! 🎉
+
+Maria comprou Camiseta Branca
+Valor: R$ 49,90
+Pagamento: Cartão ✅
+
+Falar com cliente: wa.me/5521999999999
+```
+
+#### Remetente (e-mail)
+
+| Configuração | Valor |
+|-------------|-------|
+| **E-mail** | `SMTP_USER` no `.env` (configurável) |
+| **Nome** | "Robô Vendedor" |
+| **Hoje** | `michel.ribeiro@michelribeiro.com.br` |
+| **Futuro** | `robovendedor@michelribeiro.com.br` (recomendado) |
+
+> A troca do e-mail é feita em **1 linha no `.env`** — sem alterar código.
+
+#### Fluxo completo
+
+```
+1. Cliente final compra na página do seu cliente
+2. Checkout processa o pagamento
+3. Sistema salva a venda no banco
+4. Sistema dispara notificações:
+   ├── 📧 E-mail para o dono da página (sempre)
+   ├── 📲 WhatsApp para o dono (se Evolution+)
+   └── 🔔 Notificação no painel (sempre)
+5. Dono recebe e já sabe: cliente, produto, valor
+```
+
+### 8.11 Status de Envio e Confirmação
+
+> Após a venda, o robô acompanha o pedido até o dono confirmar o envio.
+
+#### Fluxo de confirmação de endereço
+
+```
+1. 🛒 Cliente finaliza compra + paga + preenche endereço
+2. 📦 Pedido criado com status "awaiting_address_confirmation"
+3. 📲 Robô envia WhatsApp pro CLIENTE:
+     "✅ Pagamento confirmado!
+      Confirme o endereço de entrega:
+      📍 Rua X, 123 - Centro, RJ
+      Responda CONFIRMAR se estiver correto
+      Ou digite o endereço certo"
+4. 🙋 Cliente responde "CONFIRMAR" no WhatsApp
+    → Robô lê e marca como "confirmed" ✅
+    
+    OU
+    
+    Cliente digita o endereço correto no WhatsApp
+    → Robô atualiza e marca como "confirmed" ✅
+    
+    OU
+    
+    👨‍💼 Dono clica em "Confirmar Endereço" no painel
+    → Marca como "confirmed" ✅ (útil se cliente não responder)
+5. Robô para de monitorar o pedido
+6. 👨‍💼 Dono vê no painel:
+     "🛒 Venda confirmada - Pronto pra enviar!
+      Cliente: Maria (21) 99999-9999
+      Produto: Air Max 90 - R$ 599,90
+      Endereço: Rua X, 123 - Centro, RJ ✅"
+```
+
+#### Status no painel do dono
+
+| Status | Significado |
+|--------|-------------|
+| ⏳ `awaiting_address_confirmation` | Cliente confirmou pagamento, aguardando endereço |
+| ✅ `confirmed` | Endereço verificado, pronto pra enviar |
+| ❌ `canceled` | Cancelado pelo cliente ou loja |
+
+**Observação:** O dono da loja só precisa agir quando o pedido já estiver `confirmed`. O robô cuida da confirmação com o cliente automaticamente.
+
+#### Status do pedido no painel do cliente
+
+| Status | Significado | Ação do robô |
+|--------|-------------|--------------|
+| ⏳ `awaiting_confirmation` | Aguardando dono confirmar | Robô envia WhatsApp cobrando a cada 24h |
+| ✅ `confirmed` | Envio confirmado | Robô para de monitorar |
+| ❌ `canceled` | Cancelado | Robô para de monitorar |
+
+#### No painel do cliente (admin)
+
+```
+📦 Pedidos
+├── ⏳ 3 aguardando confirmação
+├── ✅ 12 confirmados hoje
+└── ❌ 1 cancelado
+
+[Ação: Confirmar envio] [Ação: Cancelar]
+```
+
+#### Integração com WhatsApp
+
+- Se o plano tiver WhatsApp (Evolution+): robô envia mensagem automática
+- Se não tiver: só notificação no painel + e-mail
+- Dono pode confirmar direto pelo WhatsApp respondendo "CONFIRMAR"
+
+### 8.12 Comportamento do Robô no Pós-Venda
+
+> Depois que o pedido é confirmado, o robô muda de modo para não criar conversa infinita.
+
+#### Limite de interações
+
+Após o pedido virar `confirmed`, o robô responde **no máximo 2 mensagens** do cliente. Depois disso, encerra:
+
+```
+Cliente: "Oba, quero trocar a cor"
+→ Robô: "Seu pedido #123 já está confirmado! ✅
+   Para trocas, fale direto com a loja no WhatsApp.
+   Algo mais que eu possa ajudar?"
+
+Cliente: "Qual o prazo?"
+→ Robô: "A loja vai te passar o prazo.
+   Fale com eles aqui 👇
+
+🔗 wa.me/5521999999999
+
+Obrigado pela compra! 🚀😊"
+
+(Fim da conversa - robô não responde mais)
+```
+
+#### Tabela de comportamento
+
+| Estado do pedido | Comportamento do robô |
+|-----------------|----------------------|
+| 🛒 **Sem pedido** | Conversa normal: ajuda, recomenda, adiciona ao carrinho |
+| ⏳ **Aguardando confirmação** | Focado em confirmar o endereço de entrega |
+| ✅ **Confirmado** | **2 respostas máximas**, depois envia link do WhatsApp da loja e encerra |
+| ❌ **Cancelado** | Informa o cancelamento e encerra na hora |
+
+#### Regras
+
+- O robô **nunca ignora** o cliente — sempre responde educadamente
+- Após o limite, envia o **link direto do WhatsApp da loja** pra loja assumir
+- Se o cliente tentar falar de novo, o robô só repete o link da loja
+
+---
+
+### 8.13 Integração WhatsApp
+
+> O sistema usa **dois números** com funções diferentes.
+
+#### Números envolvidos
+
+| Número | Função | Configurado por |
+|--------|--------|----------------|
+| 📱 **WhatsApp da loja** | Contato que o cliente final vê e chama | Dono da loja (em Configurações) |
+| 🤖 **WhatsApp do robô** | Número que o sistema usa pra enviar msgs automáticas | Dono da loja (scan QR Code) |
+
+#### WhatsApp da loja (cadastrado em Configurações)
+
+- É o número que aparece na página pública
+- Cliente final clica e já abre conversa
+- Usado no pós-venda: cliente é direcionado pra cá
+- Pode ser **pessoal ou business** — qualquer número serve
+
+#### WhatsApp do robô (conexão via QR Code)
+
+- O dono da loja escaneia um QR Code no painel
+- Conecta o robô ao WhatsApp dele
+- Robô e humano usam o **mesmo número** simultaneamente
+- Dono vê tudo que o robô responde
+- Dono pode **responder junto** se quiser — o robô não bloqueia
+- Se dono responder, o robô **para de responder** naquela conversa
+
+#### Compatibilidade
+
+| API | WhatsApp pessoal | WhatsApp Business | Custo | Plano |
+|-----|:----------------:|:-----------------:|:-----:|:----:|
+| **Evolution API** | ✅ Funciona | ✅ Funciona | Grátis (self-host) | Evolution |
+| **Cloud API (Meta)** | ❌ Não funciona | ✅ Obrigatório | Pago por conversa | Pro |
+
+#### Regras de resposta da IA
+
+- A IA responde **APENAS** sobre os produtos cadastrados e a descrição da loja
+- Se o cliente perguntar algo que a IA **não sabe**, ela responde:
+
+  > "Não sei informar sobre isso. Melhor perguntar pra loja! 😊"
+  > 🔗 *link do WhatsApp da loja*
+
+- A IA **nunca inventa** respostas — se não tem no cadastro, transfere pra loja
+
+#### Fluxo na página pública
+
+```
+Cliente final vê: "Fale conosco"
+  → clica
+  → abre WhatsApp do número da loja
+  → conversa vai pro celular do dono
+
+Robô também pode puxar conversa
+  → usa o MESMO número da loja
+  → dono vê a mensagem no celular junto
+```
+
+---
+
 ## 9. Próximos passos
 
 - [ ] Aprovar estrutura
 - [ ] Definir cores / identidade visual
 - [ ] Iniciar desenvolvimento da landing + IA
+
+---
+
+## 🔧 Setup futuro (pós-lançamento)
+
+### 🌐 Domínio próprio do produto
+
+- **Hoje:** Tudo roda em `michelribeiro.com.br` (domínio pessoal)
+- **Futuro:** Criar domínio exclusivo para o Robô Vendedor (ex: `robovendedor.com.br` ou类似)
+- **Motivo:** Não vincular o produto ao nome pessoal, facilitar revenda
+
+### 📧 E-mail do sistema
+
+- **Hoje:** `michel.ribeiro@michelribeiro.com.br` (SMTP Gmail)
+- **Futuro:** E-mail profissional no novo domínio (ex: `contato@robovendedor.com.br`)
+- **Troca:** 1 linha no `.env` — sem alterar código

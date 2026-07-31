@@ -5,7 +5,7 @@ export enum FeatureId {
   CATALOG = "catalog",
   WHATSAPP_1TO1 = "whatsapp_1to1",
   WHATSAPP_GROUP = "whatsapp_group",
-  DASHBOARD = "dashboard",
+  ANALYTICS = "analytics",
   INSTAGRAM = "instagram",
   CUSTOM_DOMAIN = "custom_domain",
 }
@@ -48,8 +48,8 @@ export const ALL_FEATURES: PlanFeature[] = [
     description: "IA envia ofertas em grupos de WhatsApp",
   },
   {
-    id: FeatureId.DASHBOARD,
-    label: "Dashboard",
+    id: FeatureId.ANALYTICS,
+    label: "Relatórios",
     description: "Gráficos de leads, conversão e vendas",
   },
   {

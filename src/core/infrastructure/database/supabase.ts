@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { Client, CreateClientInput } from "@/core/domain/client/entities/Client";
 import { ClientStatus } from "@/core/domain/client/value-objects/ClientStatus";
+import { Product, CreateProductInput } from "@/core/domain/product/entities/Product";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
@@ -104,6 +105,7 @@ export async function createClientRecord(input: CreateClientInput) {
         plan: input.plan,
         status: "active",
         free_until: input.free_until || null,
+        features: input.features || null,
       },
     ])
     .select()
@@ -126,6 +128,7 @@ export async function updateClient(
     plan?: string;
     status?: ClientStatus;
     free_until?: string | null;
+    features?: Record<string, unknown> | null;
   }
 ) {
   const { data, error } = await supabase
@@ -220,6 +223,140 @@ export async function deleteSession(token: string) {
 
   if (error) {
     console.error("Erro ao deletar sessão:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
+  }
+}
+
+// ─── Product CRUD ─────────────────────────────────────────
+
+export async function listProducts(clientId: number) {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("client_id", clientId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Erro ao listar produtos:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
+  }
+
+  return data as Product[];
+}
+
+export async function createProduct(input: CreateProductInput) {
+  const { data, error } = await supabase
+    .from("products")
+    .insert([
+      {
+        client_id: input.client_id,
+        name: input.name,
+        type: input.type,
+        description: input.description || "",
+        price: input.price,
+        images: input.images || [],
+      },
+    ])
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Erro ao criar produto:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
+  }
+
+  return data as Product;
+}
+
+export async function updateProduct(
+  id: number,
+  updates: {
+    name?: string;
+    type?: string;
+    description?: string;
+    price?: number;
+    images?: string[];
+    active?: boolean;
+  }
+) {
+  const { data, error } = await supabase
+    .from("products")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Erro ao atualizar produto:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
+  }
+
+  return data as Product;
+}
+
+export async function deleteProduct(id: number) {
+  const { error } = await supabase.from("products").delete().eq("id", id);
+
+  if (error) {
+    console.error("Erro ao deletar produto:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
+  }
+}
+
+// ─── Orders ──────────────────────────────────────────────
+
+export async function listOrders(clientId: number) {
+  const { data, error } = await supabase
+    .from("orders")
+    .select("*")
+    .eq("client_id", clientId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Erro ao listar pedidos:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
+  }
+
+  return data;
+}
+
+export async function createOrder(input: {
+  client_id: number;
+  customer_name: string;
+  customer_whatsapp: string;
+  customer_email?: string;
+  items: unknown[];
+  total: number;
+  payment_method: string;
+  payment_id: string;
+  invoice_url: string;
+  pix_qrcode?: string;
+  pix_copy_paste?: string;
+  bank_slip_url?: string;
+  shipping_address?: unknown;
+}) {
+  const { data, error } = await supabase
+    .from("orders")
+    .insert([input])
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Erro ao criar pedido:", JSON.stringify(error));
+    throw new Error(error.message || "Erro desconhecido no Supabase");
+  }
+
+  return data;
+}
+
+export async function updateOrderPaymentStatus(paymentId: string, status: string) {
+  const { error } = await supabase
+    .from("orders")
+    .update({ payment_status: status })
+    .eq("payment_id", paymentId);
+
+  if (error) {
+    console.error("Erro ao atualizar pedido:", JSON.stringify(error));
     throw new Error(error.message || "Erro desconhecido no Supabase");
   }
 }

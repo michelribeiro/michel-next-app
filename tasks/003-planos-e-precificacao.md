@@ -36,7 +36,7 @@ Definir os planos do Robô Vendedor com base nas funcionalidades que já temos +
 |-------|-------|----------------|
 | 🟢 **Básico** | **R$ 49/mês** | Página + IA + leads ilimitados + Checkout (ASAAS) + até 30 produtos |
 | 🟡 **Evolution** | **R$ 97/mês** | Tudo do Básico + WhatsApp 1:1 + Disparo em grupo (até 3) + Checkout (ASAAS) + Dashboard + produtos ilimitados |
-| 🔴 **Pro** | **R$ 197/mês** | Tudo do Evolution + Cloud API + Instagram + Checkout (ASAAS) + 10 grupos + Domínio próprio |
+| 🔴 **Pro** | **R$ 197/mês** | Tudo do Evolution + Cloud API + Instagram + Checkout (ASAAS) + 5 grupos + Domínio próprio |
 
 ### Implantação (todos os planos) — R$ 197 único
 - Configurar produtos/serviços
@@ -79,24 +79,17 @@ Definir os planos do Robô Vendedor com base nas funcionalidades que já temos +
 
 ---
 
-## A definir
+## Decisões tomadas
 
-- [ ] **Teste grátis** — quantos dias? O que liberar?
-- [ ] **Upgrade/downgrade** — como funciona entre planos?
-- [ ] **Excedente** — o que acontece se passar do limite (ex: lead extra)?
-
----
-
-## Próximos passos
-
-- [ ] Aprovar valores dos planos
-- [ ] Atualizar landing page com planos
-- [ ] Criar sistema de cadastro de clientes no admin
-- [ ] Implementar limites por plano no backend
+- **Plano Free:** Liberado manualmente pelo admin com features customizáveis (não é autosserviço)
+- **Upgrade/downgrade:** Admin altera o plano no cadastro do cliente (manual por enquanto)
+- **Excedente:** Bloqueado na API — cliente não consegue cadastrar além do limite do plano
 
 ---
 
-## Relacionado
+## ✅ Concluído
 
-- Task 002 — Evolução do Robô
-- Site: michelribeiro.com.br
+- [x] Valores dos planos aprovados
+- [x] Landing page com planos atualizada (Básico 30, Evolution 50, Pro ∞)
+- [x] Cadastro de clientes no admin (com Free customizável)
+- [x] Limites por plano implementados na API de produtos

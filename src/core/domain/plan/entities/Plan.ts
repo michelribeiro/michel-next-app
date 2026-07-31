@@ -7,7 +7,7 @@ export interface PlanLimit {
   hasWhatsApp: boolean;
   isCloudAPI: boolean;
   hasInstagram: boolean;
-  hasDashboard: boolean;
+  hasAnalytics: boolean;
   hasCustomDomain: boolean;
 }
 
@@ -35,7 +35,7 @@ export const PLANS: Plan[] = [
       hasWhatsApp: false,
       isCloudAPI: false,
       hasInstagram: false,
-      hasDashboard: true,
+      hasAnalytics: true,
       hasCustomDomain: false,
     },
   },
@@ -47,12 +47,12 @@ export const PLANS: Plan[] = [
     setupFee: Price.once(197),
     highlight: true,
     limits: {
-      maxProducts: "unlimited",
+      maxProducts: 50,
       maxGroups: 3,
       hasWhatsApp: true,
       isCloudAPI: false,
       hasInstagram: false,
-      hasDashboard: true,
+      hasAnalytics: true,
       hasCustomDomain: false,
     },
   },
@@ -65,11 +65,11 @@ export const PLANS: Plan[] = [
     highlight: false,
     limits: {
       maxProducts: "unlimited",
-      maxGroups: 10,
+      maxGroups: 5,
       hasWhatsApp: true,
       isCloudAPI: true,
       hasInstagram: true,
-      hasDashboard: true,
+      hasAnalytics: true,
       hasCustomDomain: true,
     },
   },
